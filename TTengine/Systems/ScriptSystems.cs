@@ -23,7 +23,8 @@ namespace TTengine.Systems
             sc.UpdateComp(this);
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
-            sc.Script.OnUpdate(ctx);
+            foreach(var script in sc.Scripts)
+                script.OnUpdate(ctx);
         }
 
     }
@@ -38,7 +39,8 @@ namespace TTengine.Systems
             if (!sc.IsActive) return;
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
-            sc.Script.OnDraw(ctx);
+            foreach (var script in sc.Scripts)
+                script.OnDraw(ctx);
         }
 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using Microsoft.Xna.Framework;
 
 namespace Game1.Behaviors
@@ -20,7 +21,8 @@ namespace Game1.Behaviors
         Vector2 pushFromOthers = Vector2.Zero;
         Vector2 pushFromOthersRemainder = Vector2.Zero;
 
-        public PushBehavior()
+        public PushBehavior(Thing parentThing)
+            : base(parentThing)
         {
         }
 
@@ -36,15 +38,6 @@ namespace Game1.Behaviors
 
         protected override void OnNextMove()
         {
- 	        base.OnNextMove();
- 	         	        
-        }
-
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-
 			// check if there is push from others. This push can build up over time, only
 			// released upon a next move
             float dist = pushFromOthers.Length();

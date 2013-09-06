@@ -1,10 +1,12 @@
 ﻿using System;
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Game1;
 using Game1.Behaviors;
 using TreeSharp;
+using Artemis;
 
 namespace Game1.Actors
 {
@@ -20,75 +22,44 @@ namespace Game1.Actors
         protected string[] attackString = new string[] { "Take this, golden villain!", "We hurt him!", "He bleeds!", "Our swords struck true!",
             "He bleeds!", "To the grave, golden traitor!", "Die, golden scum!" , "He stumbles!"};
 
-        public static RedGuard Create()
+        public static Entity Create(Thing chaseTarget)
         {
-            return new RedGuard(Level.Current.pixie);
-        }
+            var redGuard = new RedGuard();
+            var e = CreateThing("pixie", redGuard);
+            redGuard.IsCollisionFree = false;
+            e.GetComponent<DrawComp>().DrawColor = new Color(255, 10, 4);
 
-        public static RedGuard CreateCloaky()
-        {
-            RedGuard p = new RedGuard(Level.Current.pixie);
-            p.IsCloaky = true;
-            return p;
-        }
-
-        bool isCloaky = false;
-
-        public RedGuard(Thing chaseTarget)
-            : base("pixie")
-        {
-            IsCollisionFree = false;
-            DrawInfo.DrawColor = new Color(255, 10, 4);
-
+            var ai = new BTAIComp();
+            e.AddComponent(ai);
             var sub = new PrioritySelector();
-            Add(sub);
+            ai.rootNode = sub;
 
             // chase companions that are very close
-            ChasingComp = new ChaseBehavior(typeof(Companion));
-            ChasingComp.MoveSpeed = RandomMath.RandomBetween(0.43f, 0.65f);
-            ChasingComp.ChaseRange = 1.5f; // RandomMath.RandomBetween(12f, 40f);
-            sub.AddChild(ChasingComp);
+            redGuard.ChasingComp = new ChaseBehavior(typeof(Companion));
+            redGuard.ChasingComp.MoveSpeed = RandomMath.RandomBetween(0.43f, 0.65f);
+            redGuard.ChasingComp.ChaseRange = 1.5f; // RandomMath.RandomBetween(12f, 40f);
+            sub.AddChild(redGuard.ChasingComp);
 
             // chase hero
-            Chasing = new ChaseBehavior(chaseTarget);
-            Chasing.MoveSpeed = RandomMath.RandomBetween(0.47f, 0.75f);
-            Chasing.ChaseRange = 15f; // RandomMath.RandomBetween(12f, 40f);
-            sub.AddChild(Chasing);
+            redGuard.Chasing = new ChaseBehavior(chaseTarget);
+            redGuard.Chasing.MoveSpeed = RandomMath.RandomBetween(0.47f, 0.75f);
+            redGuard.Chasing.ChaseRange = 15f; // RandomMath.RandomBetween(12f, 40f);
+            sub.AddChild(redGuard.Chasing);
 
-            Turning = new AlwaysTurnRightBehavior(); // patrolling
-            Turning.MoveSpeed = Chasing.MoveSpeed; //RandomMath.RandomBetween(0.57f, 1.05f);
-            Turning.MoveSpeed = 0.7f;
-            sub.AddChild(Turning);
+            redGuard.Turning = new AlwaysTurnRightBehavior(); // patrolling
+            redGuard.Turning.MoveSpeed = redGuard.Chasing.MoveSpeed; //RandomMath.RandomBetween(0.57f, 1.05f);
+            redGuard.Turning.MoveSpeed = 0.7f;
+            sub.AddChild(redGuard.Turning);
 
-            Wandering = new RandomWanderBehavior(2.7f, 11.3f);
-            Wandering.MoveSpeed = 0.7f;
-            sub.AddChild(Wandering);
-            
+            redGuard.Wandering = new RandomWanderBehavior(redGuard,2.7f, 11.3f);
+            redGuard.Wandering.MoveSpeed = 0.7f;
+            sub.AddChild(redGuard.Wandering);
+
+            return e;
         }
 
-        /// <summary>
-        /// set 'cloaky' status, a cloaky is a hardly visible bad pixel
-        /// </summary>
-        public bool IsCloaky
+        protected override void OnUpdate(ScriptContext p)
         {
-            get
-            {
-                return isCloaky;
-            }
-            set
-            {
-                if (IsCloaky == value)
-                    return;
-                // if change - swap dutycycle
-                Blinking.DutyCycle = 1f - Blinking.DutyCycle;
-                isCloaky = value;                
-            }
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-
             if (TargetMove.LengthSquared() > 0)
             {
                 if (CollidesWhenThisMoves(Level.Current.pixie, TargetMove))

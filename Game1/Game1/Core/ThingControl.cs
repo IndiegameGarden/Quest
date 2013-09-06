@@ -6,11 +6,12 @@ using TTengine.Core;
 using Microsoft.Xna.Framework;
 using TTengine.Util;
 using TreeSharp;
+using Game1.Comps;
 
 namespace Game1
 {
     /**
-     * A script or behavior that controls a Thing
+     * A script or behavior that controls a Thing, part of a TreeSharp BT AI structure
      */
     public class ThingControl: TreeNode
     {
@@ -63,7 +64,10 @@ namespace Game1
                 // do my move                
                 OnNextMove();
                 if (IsTargetMoveDefined)
+                {
+                    ctx.Entity.GetComponent<ThingComp>().TargetMove = TargetMove;
                     yield return RunStatus.Success;
+                }
                 else
                     yield return RunStatus.Failure;
             }

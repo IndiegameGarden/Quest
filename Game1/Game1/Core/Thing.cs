@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Game1.Behaviors;
 using Game1.Actors;
+using TreeSharp;
+using Artemis;
 
 namespace Game1
 {
@@ -18,8 +21,18 @@ namespace Game1
      * base class for any visible thing in the Pixie universe. Has multi-pixel
      * collission detection including background collissions.
      */
-    public class Thing: Comp
+    public class Thing: IScript
     {
+        public bool Active = true;
+        public bool Visible = true;
+
+        public List<Thing> Children = new List<Thing>();
+
+        /// <summary>
+        /// this Thing can be attached to a parent Thing, if null then not attached.
+        /// </summary>
+        public Thing Parent = null;
+
         /// <summary>
         /// if true can pass anything
         /// </summary>
@@ -172,17 +185,18 @@ namespace Game1
                 allThingsList.Add(this);
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected virtual void OnUpdate(ScriptContext p)
         {
-            base.OnUpdate(ref p);
+            var Motion = p.Entity.GetComponent<PositionComp>();
+            var Scale = p.Entity.GetComponent<ScaleComp>();
+            var Ai = p.Entity.GetComponent<BTAIComp>();
 
             // update position of the smooth motion of this Thing in the TTengine
             // update position when attached to a parent Thing
-            if (Parent is Thing)
+            if (Parent != null)
             {
-                Thing t = Parent as Thing;
-                Target = t.Target + AttachmentPosition;
-                Motion.Position = Motion.ScaleAbs * FromPixels(AttachmentPosition);
+                Target = Parent.Target + AttachmentPosition;
+                Motion.Position = Scale.ScaleAbs * FromPixels(AttachmentPosition);
             }
             else
             {   // not attached to a parent Thing
@@ -192,7 +206,9 @@ namespace Game1
 
             // compute target move for this thing based on child ThingControl controls
             TargetMove = Vector2.Zero;
-            foreach (Gamelet g in Children)
+            GetHashCode//get from the ThingComp
+                /*
+            foreach (TreeNode g in Ai.rootNode.)
             {
                 if (g is ThingControl)
                 {
@@ -204,6 +220,7 @@ namespace Game1
                     }
                 }
             }
+                 */
 
             // compute new facingDirection from final TargetMove
             if (TargetMove.LengthSquared() > 0f)
@@ -235,9 +252,9 @@ namespace Game1
                     if (!IsCollisionFree)
                     {
                         // check all attached Things too                        
-                        foreach (Gamelet g in Children)
+                        foreach (Thing g in Children)
                         {
-                            if (g is Thing && g.Visible)
+                            if (g.Visible)
                             {
                                 Thing t = g as Thing;
                                 if (t.IsCollisionFree) continue;
@@ -303,8 +320,7 @@ namespace Game1
             {
                 if (t == this) continue;
                 if (!t.Active) continue;
-                if (!t.Visible) continue;
-                if (t.Delete) continue;
+                if (!t.Visible) continue;        
                 if (CollidesWhenThisMoves(t,myPotentialMove))
                 {
                     l.Add(t);
@@ -322,7 +338,6 @@ namespace Game1
                 if (t == this) continue;
                 if (!t.Active) continue;
                 if (!t.Visible) continue;
-                if (t.Delete) continue;
                 if (t.GetType() == thingType)
                 {
                     float dist = (t.Position - this.Position).Length();
@@ -497,6 +512,36 @@ namespace Game1
             //cycl.timePeriodG = cyclePeriod * RandomMath.RandomBetween(0.7f, 0.93f); ;
             Add(cycl);
         }
+
+        public void Add(IScript script)
+        {
+            fix
+        }
+
+        public static Entity CreateThing(string bitmap, Thing thing)
+        {
+            var e = TTFactory.CreateSpritelet(bitmap);
+            e.AddComponent(new ScriptComp(thing));
+
+            SpriteComp sc = e.GetComponent<SpriteComp>();
+
+            thing.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
+            thing.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
+            var textureData = new Color[BoundingRectangle.Width * BoundingRectangle.Height];
+            sc.Texture.GetData(textureData);
+            sc.Center = Vector2.Zero;
+
+            thing.Pushing = new PushBehavior(thing);
+            (e.GetComponent<BTAIComp>().rootNode as PrioritySelector).AddChild(thing.Pushing);                   
+
+            return e;
+        }
+
+        public static Entity CreateThing(Thing thing)
+        {
+            return CreateThing("pixie",thing);
+        }
+
 
     }
 }

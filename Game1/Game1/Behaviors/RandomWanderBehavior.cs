@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using TTengine.Core;
+using TTengine.Util;
 
 namespace Game1.Behaviors
 {
@@ -20,7 +21,8 @@ namespace Game1.Behaviors
          */
         public float MaxDirectionChangeTime, MinDirectionChangeTime;
 
-        public RandomWanderBehavior(float minDirectionChangeTime, float maxDirectionChangeTime)
+        public RandomWanderBehavior(Thing parentThing, float minDirectionChangeTime, float maxDirectionChangeTime):
+            base(parentThing)
         {
             this.MinDirectionChangeTime = minDirectionChangeTime;
             this.MaxDirectionChangeTime = maxDirectionChangeTime;
@@ -28,15 +30,6 @@ namespace Game1.Behaviors
 
         float dirChangeTime = 0f;
         float timeSinceLastChange = 0f;
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-
-            // time keeping
-            timeSinceLastChange += p.Dt;
-
-        }
 
         protected override void OnNextMove()
         {

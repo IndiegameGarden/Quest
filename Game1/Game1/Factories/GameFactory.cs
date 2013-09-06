@@ -38,11 +38,6 @@ namespace Game1.Factories
 
         protected Random rnd = new Random();
 
-        public Entity CreateThing()
-        {
-            return CreateThing("pixie");
-        }
-
         public Entity CreateThing(string bitmapFile)
         {
             Entity t = TTFactory.CreateSpritelet(bitmapFile);

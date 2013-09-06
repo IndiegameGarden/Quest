@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using Microsoft.Xna.Framework;
 
 namespace Game1.Behaviors
 {
-    public class ColorCycleBehavior: Gamelet
+    public class ColorCycleBehavior: IScript
     {
-        public float timePeriod;
-        public float timePeriodR, timePeriodG, timePeriodB, timePeriodA;
+        public double timePeriod;
+        public double timePeriodR, timePeriodG, timePeriodB, timePeriodA;
         public Color minColor;
         public Color maxColor;
 
@@ -23,9 +24,9 @@ namespace Game1.Behaviors
             timePeriodA = timePeriod;
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override void OnUpdate(ScriptContext p)
         {
-            float t = 2 * (SimTime % timePeriod); // TODO SimTime is not the time related to the Draw!
+            double t = 2 * (p.ScriptComp.SimTime % timePeriod); // TODO SimTime is not the time related to the Draw!
             if (t > timePeriod ) // gen sawtooth wave
                 t = 2*timePeriod - t;
             Color col = new Color( (int)  ((t / timePeriodR) * (maxColor.R - minColor.R) + minColor.R),
@@ -33,7 +34,7 @@ namespace Game1.Behaviors
                                    (int)  ((t / timePeriodB) * (maxColor.B - minColor.B) + minColor.B),
                                    (int)  ((t / timePeriodA) * (maxColor.A - minColor.A) + minColor.A)
                                  );
-            Parent.DrawInfo.DrawColor = col;
+            p.Entity.GetComponent<DrawComp>().DrawColor = col;
             
         }
 

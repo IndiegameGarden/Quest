@@ -125,6 +125,11 @@
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />
     <Compile Include="Behaviors\ReverseControlBehavior.cs" />
     <Compile Include="Behaviors\SubsumptionBehavior.cs" />
+    <Compile Include="Comps\ThingComp.cs" />
+    <Compile Include="Core\GameMusic.cs" />
+    <Compile Include="Core\GameSound.cs" />
+    <Compile Include="Core\Level.cs" />
+    <Compile Include="Core\LevelBackground.cs" />
     <Compile Include="Core\Thing.cs" />
     <Compile Include="Core\ThingControl.cs" />
     <Compile Include="Core\Toy.cs" />
@@ -182,7 +187,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Comps\" />
     <Folder Include="Levels\" />
     <Folder Include="Systems\" />
   </ItemGroup>
