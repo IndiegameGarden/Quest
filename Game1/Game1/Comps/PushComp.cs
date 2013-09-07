@@ -11,18 +11,17 @@ namespace Game1.Behaviors
     /// <summary>
     /// lets a Thing push another Thing and being pushed
     /// </summary>
-    public class PushBehavior: ThingControl
+    public class PushComp: Comp
     {
         /// <summary>
         /// relative force of pushing (strength of unit related). 0f is no pushing force at all but can be pushed.
         /// </summary>
         public float Force = 1.0f;
 
-        Vector2 pushFromOthers = Vector2.Zero;
-        Vector2 pushFromOthersRemainder = Vector2.Zero;
+        public Vector2 pushFromOthers = Vector2.Zero;
+        public Vector2 pushFromOthersRemainder = Vector2.Zero;
 
-        public PushBehavior(Thing parentThing)
-            : base(parentThing)
+        public PushComp()
         {
         }
 

@@ -7,10 +7,11 @@ using Game1;
 using Game1.Behaviors;
 using TreeSharp;
 using Artemis;
+using Game1.Factories;
 
 namespace Game1.Actors
 {
-    public class RedGuard: Thing
+    public class RedGuard
     {
         // behaviors - the things that red guards do 
         public BlinkBehavior Blinking;
@@ -22,11 +23,12 @@ namespace Game1.Actors
         protected string[] attackString = new string[] { "Take this, golden villain!", "We hurt him!", "He bleeds!", "Our swords struck true!",
             "He bleeds!", "To the grave, golden traitor!", "Die, golden scum!" , "He stumbles!"};
 
-        public static Entity Create(Thing chaseTarget)
+        public static Entity Create()
         {
-            var redGuard = new RedGuard();
-            var e = CreateThing("pixie", redGuard);
+            var e = GameFactory.CreateThing();
+            var redGuard = e.GetComponent<ThingComp>();
             redGuard.IsCollisionFree = false;
+            // FIXME make this spritecomp or ....
             e.GetComponent<DrawComp>().DrawColor = new Color(255, 10, 4);
 
             var ai = new BTAIComp();

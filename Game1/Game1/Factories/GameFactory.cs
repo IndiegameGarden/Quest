@@ -38,23 +38,30 @@ namespace Game1.Factories
 
         protected Random rnd = new Random();
 
-        public Entity CreateThing(string bitmapFile)
+        public static Entity CreateThing(string bitmap)
         {
-            Entity t = TTFactory.CreateSpritelet(bitmapFile);
-            Thing tc = new Thing();
-            SpriteComp sc = t.GetComponent<SpriteComp>();
+            var e = TTFactory.CreateSpritelet(bitmap);
+            e.AddComponent(new ThingComp());
 
-            tc.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
-            tc.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
+            SpriteComp sc = e.GetComponent<SpriteComp>();
+
+            thing.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
+            thing.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
             var textureData = new Color[BoundingRectangle.Width * BoundingRectangle.Height];
             sc.Texture.GetData(textureData);
             sc.Center = Vector2.Zero;
 
-            t.AddComponent(tc);
+            thing.Pushing = new PushBehavior(thing);
+            (e.GetComponent<BTAIComp>().rootNode as PrioritySelector).AddChild(thing.Pushing);
 
-            Pushing = new PushBehavior();
-            Add(Pushing);     
-
+            return e;
         }
+
+        public static Entity CreateThing()
+        {
+            return CreateThing("pixie");
+        }
+
+
     }
 }

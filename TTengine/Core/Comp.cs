@@ -22,7 +22,7 @@ namespace TTengine.Core
 
         /// <summary>Called by TTengine Systems, to conveniently update any of the Comp members that need updating each cycle.</summary>
         /// <param name="sys"></param>
-        internal void UpdateComp(EntitySystem sys)
+        public void UpdateComp(EntitySystem sys)
         {
             // TODO FIXME optimize with the fixed ticks-to-seconds scale factor? - get readymade from another location/class/ttgame?
             Dt = TimeSpan.FromTicks(sys.EntityWorld.Delta).TotalSeconds;
