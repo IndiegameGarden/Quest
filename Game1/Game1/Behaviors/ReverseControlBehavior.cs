@@ -5,7 +5,7 @@ using TTengine.Core;
 namespace Game1.Behaviors
 {
     /**
-     * a control that reverses the direction computed (by other controls) for the Thing.
+     * a control that reverses the direction computed (by other controls) for the ThingComp.
      */
     public class ReverseControlBehavior: ThingControl
     {

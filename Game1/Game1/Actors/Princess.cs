@@ -11,7 +11,7 @@ namespace Game1.Actors
     /**
      * the pixel princess
      */
-    public class Princess: Thing
+    public class Princess: ThingComp
     {
         public bool isFollowHero = false;
         public ChaseBehavior Following;

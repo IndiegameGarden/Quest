@@ -24,10 +24,10 @@ namespace Game1.Behaviors
             base.OnNextMove();
 
             // check for enemy facing
-            List<Thing> facing = ParentThing.DetectCollisions(ParentThing.FacingDirection);
+            List<ThingComp> facing = ParentThing.DetectCollisions(ParentThing.FacingDirection);
             WasCombat = IsCombat;
             IsCombat = false;
-            foreach(Thing t in facing) 
+            foreach(ThingComp t in facing) 
             {
                 if (t.GetType() == EnemyType)
                 {

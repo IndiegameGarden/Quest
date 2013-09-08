@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TTengine.Core;
-using Microsoft.Xna.Framework;
+using TTengine.Comps;
 using TTengine.Util;
+using Microsoft.Xna.Framework;
 using TreeSharp;
 using Game1.Comps;
 
 namespace Game1
 {
-    /**
-     * A script or behavior that controls a Thing, part of a TreeSharp BT AI structure
-     */
+    /// <summary>
+    /// A script or behavior that controls a ThingComp, a TreeNode part of a TreeSharp BT AI tree structure
+    /// </summary>
     public class ThingControl: TreeNode
     {
-        public Thing ParentThing;
-
         /// <summary>
-        /// relative speed of execution (1.0 is normal)
+        /// time between moves (in seconds)
         /// </summary>
-        public float MoveSpeed = 1.0f;
+        public double MoveDeltaTime = 0.2;
 
         /// <summary>
         /// flag indicating whether TargetMove and TargetMoveMultiplier are valid (true) for this round or undefined (false)
@@ -46,26 +43,25 @@ namespace Game1
         // timer that fires when next move is to be computed
         protected double wTime = RandomMath.RandomBetween(0f,0.2f);
 
-        public ThingControl(Thing parentThing)
+        public ThingControl()
         {
-            this.ParentThing = parentThing;
         }
 
         public override IEnumerable<RunStatus> Execute(object context)
         {
-            BTAIContext ctx = context as BTAIContext;
-            TargetMove = Vector2.Zero;
+            BTAIContext ctx = context as BTAIContext;            
             wTime -= ctx.Dt;
 
-            if (wTime <= 0f )   // timer triggers
+            if (wTime <= 0 )   // timer triggers
             {
-                wTime += 0.2f / MoveSpeed;
+                wTime += MoveDeltaTime;
 
                 // do my move                
-                OnNextMove();
+                TargetMove = Vector2.Zero;
+                OnNextMove(ctx);
                 if (IsTargetMoveDefined)
                 {
-                    ctx.Entity.GetComponent<ThingComp>().TargetMove = TargetMove;
+                    ctx.Entity.GetComponent<VelocityComp>().SteeringDirection = TargetMove;
                     yield return RunStatus.Success;
                 }
                 else
@@ -75,7 +71,12 @@ namespace Game1
             yield return (RunStatus) LastStatus;
         }
         
-        protected virtual void OnNextMove()
+        /// <summary>
+        /// Custom code should override this method. It will (in case of a move)
+        /// set TargetMove and IsTargetMoveDefined := true.
+        /// </summary>
+        /// <param name="ctx">BTAIContext object passed from TreeSharp engine.</param>
+        protected virtual void OnNextMove(BTAIContext ctx)
         {
         }
 

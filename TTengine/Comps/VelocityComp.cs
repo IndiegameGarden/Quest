@@ -40,7 +40,7 @@ namespace TTengine.Comps
     using Microsoft.Xna.Framework;
     using Artemis.Interface;
 
-    /// <summary>The velocity.</summary>
+    /// <summary>Velocity and acceleration of an Entity, contributing to its position change</summary>
     public class VelocityComp : IComponent
     {
         /// <summary>To radians.</summary>
@@ -60,8 +60,8 @@ namespace TTengine.Comps
             Y = y;
         }
 
-        /// <summary>Gets or sets the position.</summary>
-        /// <value>The position.</value>
+        /// <summary>Gets or sets the velocity.</summary>
+        /// <value>The velocity.</value>
         public Vector2 Velocity
         {
             get
@@ -76,6 +76,11 @@ namespace TTengine.Comps
             }
         }
 
+        /// <summary>
+        /// A steering/movement direction input written here by an AI or user input system.
+        /// TODO Not directly influencing Velocity, another (custom) system should do that.
+        /// </summary>
+        public Vector2 SteeringDirection = Vector2.Zero;
 
         /*
         /// <summary>Initializes a new instance of the <see cref="VelocityComp" /> class.</summary>
@@ -118,6 +123,7 @@ namespace TTengine.Comps
             set
             {
                 // TODO
+                throw new NotImplementedException();
             }
         }
 

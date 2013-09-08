@@ -11,12 +11,12 @@ namespace Game1
     /// base class for a Toy that can be picked up, left behind, used (and then it is active for a while), sometimes with 
     /// multiple shots before it is expended. Typically some special power, effect or weapon.
     /// </summary>
-    public abstract class Toy: Thing
+    public abstract class Toy: ThingComp
     {
         /// <summary>
-        /// if my Parent is a Thing, this holds it. If null, there is no Parent which is a Thing
+        /// if my Parent is a ThingComp, this holds it. If null, there is no Parent which is a ThingComp
         /// </summary>
-        public Thing ParentThing = null;
+        public ThingComp ParentThing = null;
 
         public bool CanBePickedUp = true;
 
@@ -32,7 +32,7 @@ namespace Game1
 
         /// <summary>
         /// whether the Toy usage is being actively triggered now (true) or not (false).
-        /// Triggering is for example by keypress or by the AI of a Thing.
+        /// Triggering is for example by keypress or by the AI of a ThingComp.
         /// </summary>
         public bool IsTriggered = false;
 
@@ -100,9 +100,9 @@ namespace Game1
         protected override void  OnNewParent()
         {
  	         base.OnNewParent();
-             if (Parent is Thing)
+             if (Parent is ThingComp)
              {
-                 ParentThing = Parent as Thing;
+                 ParentThing = Parent as ThingComp;
                  ParentThing.ToyActive = this;
                  if (UsedUponPickup && UsesLeft > 0)
                  {
@@ -122,7 +122,7 @@ namespace Game1
             }
 
             // check if the last message, if any, about this toy is already done and new instance can be started
-            Thing pixie = Level.Current.pixie;
+            ThingComp pixie = Level.Current.pixie;
             bool pixieFacingToy = CollidesWhenOtherMoves(pixie, pixie.FacingDirection);
             if (toyExplanationMessage != null && toyExplanationMessage.Delete && !pixieFacingToy)
             {

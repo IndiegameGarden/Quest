@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Util;
+using Game1.Comps;
 using Microsoft.Xna.Framework;
 
 namespace Game1.Behaviors
 {
     /// <summary>
-    /// lets a Thing chase another Thing when it's visible.
+    /// lets a ThingComp chase another ThingComp when it's visible.
     /// </summary>
     public class ChaseBehavior: ThingControl
     {
         /// <summary>
         /// followed target of this chase behavior
         /// </summary>
-        public Thing ChaseTarget;
+        public ThingComp ChaseTarget;
         public Type ChaseTargetType;
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace Game1.Behaviors
         /// </summary>
         public bool Avoidance = false;
 
-        public ChaseBehavior(Thing chaseTarget)
+        public ChaseBehavior(ThingComp chaseTarget)
         {
             this.ChaseTarget = chaseTarget;
         }
@@ -43,52 +45,55 @@ namespace Game1.Behaviors
             this.ChaseTargetType = chaseClass;
         }
 
-        protected override void OnNextMove()
+        protected override void OnNextMove(BTAIContext ctx)
         {
- 	        base.OnNextMove();
-
-            // check for dead chase targets
-            if (ChaseTarget != null && ChaseTarget.Delete)
-                ChaseTarget = null;
+            var tc = ctx.Entity.GetComponent<ThingComp>();
 
             // recheck for nearest chase target
             if (ChaseTargetType != null)
             {
-                ChaseTarget = ParentThing.FindNearest(ChaseTargetType);
+                ChaseTarget = tc.FindNearest(ChaseTargetType);
             }
 
-            Vector2 dif;
-            if (ChaseTarget != null && ChaseTarget.Visible)
+            if (ChaseTarget != null)
             {
-                dif = ChaseTarget.Position - ParentThing.Target;
-                float dist = dif.Length();
-                if (dist > 0f && dist <= ChaseRange && dist > SatisfiedRange)
+                // check for dead chase targets FIXME
+                //if (ChaseTarget.) 
+                //  ChaseTarget = null;
+
+                Vector2 dif;
+                if (ChaseTarget.Visible)
                 {
-                    // indicate we're chasing
-                    IsTargetMoveDefined = true;
+                    dif = ChaseTarget.Position - tc.Target;
+                    float dist = dif.Length();
+                    if (dist > 0f && dist <= ChaseRange && dist > SatisfiedRange)
+                    {
+                        // indicate we're chasing
+                        IsTargetMoveDefined = true;
+                    }
                 }
-            }
-            
-            dif = Vector2.Zero;
 
-            // compute direction towards chase-target
-            dif = ChaseTarget.Position - ParentThing.Target;
-            if (Avoidance)
-                dif = -dif;
+                dif = Vector2.Zero;
 
-            // choose one direction semi-randomly, if diagonals would be required
-            if (dif.X != 0f && dif.Y != 0f)
-            {
-                float r = RandomMath.RandomUnit();
-                // the larger dif.X wrt dif.Y, the smaller the probability of moving in the Y direction
-                float thres = Math.Abs(dif.X) / (Math.Abs(dif.X) + Math.Abs(dif.Y));
-                if (r > thres)
-                    dif.X = 0f;
-                else
-                    dif.Y = 0f;
+                // compute direction towards chase-target
+                dif = ChaseTarget.Position - tc.Target;
+                if (Avoidance)
+                    dif = -dif;
+
+                // choose one direction semi-randomly, if diagonals would be required
+                if (dif.X != 0f && dif.Y != 0f)
+                {
+                    float r = RandomMath.RandomUnit();
+                    // the larger dif.X wrt dif.Y, the smaller the probability of moving in the Y direction
+                    float thres = Math.Abs(dif.X) / (Math.Abs(dif.X) + Math.Abs(dif.Y));
+                    if (r > thres)
+                        dif.X = 0f;
+                    else
+                        dif.Y = 0f;
+                }
+                dif.Normalize();
+                TargetMove = dif;
             }
-            dif.Normalize();
-            TargetMove = dif;
         }
 
     }

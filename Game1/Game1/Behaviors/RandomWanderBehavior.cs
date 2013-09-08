@@ -11,7 +11,7 @@ namespace Game1.Behaviors
     public class RandomWanderBehavior: ThingControl
     {
         /**
-         * current random direction of wandering - may be change
+         * current random direction of wandering - may be changed by an external object
          */
         public Vector2 CurrentDirection = Vector2.Zero;
 
@@ -21,8 +21,7 @@ namespace Game1.Behaviors
          */
         public float MaxDirectionChangeTime, MinDirectionChangeTime;
 
-        public RandomWanderBehavior(Thing parentThing, float minDirectionChangeTime, float maxDirectionChangeTime):
-            base(parentThing)
+        public RandomWanderBehavior(float minDirectionChangeTime, float maxDirectionChangeTime)
         {
             this.MinDirectionChangeTime = minDirectionChangeTime;
             this.MaxDirectionChangeTime = maxDirectionChangeTime;
@@ -40,6 +39,7 @@ namespace Game1.Behaviors
                 dir = Vector2.Zero;
             else
             {
+                // TODO choose direction here or constrain later (in VelocityComp)
                 // choose one direction randomly, if diagonals would be required
                 if (dir.X != 0f && dir.Y != 0f)
                 {
@@ -54,7 +54,7 @@ namespace Game1.Behaviors
             TargetMove = dir;
             IsTargetMoveDefined = true;
 
-            // direction changing
+            // direction changing after some random time
             if (timeSinceLastChange >= dirChangeTime)
             {
                 timeSinceLastChange = 0f;

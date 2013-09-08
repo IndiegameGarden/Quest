@@ -7,7 +7,7 @@ using Game1.Behaviors;
 
 namespace Game1.Actors
 {
-    public class Servant: Thing
+    public class Servant: ThingComp
     {
         public ChaseBehavior Avoiding;
         public RandomWanderBehavior Wandering;
@@ -27,19 +27,19 @@ namespace Game1.Actors
 
             // avoid other things
             Avoiding = new ChaseBehavior(typeof(Companion));
-            Avoiding.MoveSpeed = RandomMath.RandomBetween(0.43f, 0.65f);
+            Avoiding.MoveDeltaTime = RandomMath.RandomBetween(0.43f, 0.65f);
             Avoiding.ChaseRange = 11f; // RandomMath.RandomBetween(12f, 40f);
             Add(Avoiding);
 
             // avoid other things
             Avoiding = new ChaseBehavior(typeof(Pixie));
-            Avoiding.MoveSpeed = RandomMath.RandomBetween(0.43f, 0.65f);
+            Avoiding.MoveDeltaTime = RandomMath.RandomBetween(0.43f, 0.65f);
             Avoiding.ChaseRange = 11f; // RandomMath.RandomBetween(12f, 40f);
             //Avoiding.Avoidance = true;
             Add(Avoiding);
 
             Wandering = new RandomWanderBehavior(9.7f, 14.3f);
-            Wandering.MoveSpeed = 0.3f;
+            Wandering.MoveDeltaTime = 0.3f;
             Add(Wandering);
 
             Reverse = new ReverseControlBehavior();

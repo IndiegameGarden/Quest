@@ -8,13 +8,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Game1.Actors;
+using Game1.Comps;
 
 namespace Game1
 {
     /// <summary>
     /// base class for all levels (common functions)
     /// </summary>
-    public abstract class Level: Drawlet
+    public abstract class Level
     {
         /// <summary>
         /// the current Level singleton
@@ -74,7 +75,7 @@ namespace Game1
         /// <summary>
         /// our heroine Pixie
         /// </summary>
-        public Pixie pixie;
+        public ThingComp pixie;
         public Boss boss;
 
         public SubtitleManager Subtitles;
@@ -243,7 +244,7 @@ namespace Game1
         /// check whether the given pixel position in this level is currently passable
         /// </summary>
         /// <param name="pos">pixel position to check</param>
-        /// <returns>true if passable for any Thing entity</returns>
+        /// <returns>true if passable for any ThingComp entity</returns>
         /*
         public bool CanPass(Vector2 pos)
         {
@@ -256,7 +257,7 @@ namespace Game1
             base.OnUpdate(ref p);
 
             // important: reflect the global viewpos (for sprites to use)
-            Thing.ViewPos = Background.Position;
+            ThingComp.ViewPos = Background.Position;
 
             // do some level tasks
             LevelKeyControl(ref p);

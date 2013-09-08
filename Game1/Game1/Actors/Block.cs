@@ -11,7 +11,7 @@ namespace Game1.Actors
     /**
      * a block that can be pushed around
      */
-    public class Block: Thing
+    public class Block: ThingComp
     {
 
         public Block()

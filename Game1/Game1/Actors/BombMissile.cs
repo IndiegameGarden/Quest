@@ -11,7 +11,7 @@ namespace Game1.Actors
     {
         public BombMissileControl()
         {
-            MoveSpeed = 5f;
+            MoveDeltaTime = 5f;
         }
 
         protected override void OnNextMove()
@@ -26,7 +26,7 @@ namespace Game1.Actors
     /// <summary>
     /// the missile that is launched by the BombToy
     /// </summary>
-    public class BombMissile: Thing
+    public class BombMissile: ThingComp
     {
         public static Vector2 MISSILE_DIRECTION = new Vector2(0, 1f);
         public int ExplosionRange = 5;

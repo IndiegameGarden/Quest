@@ -15,20 +15,26 @@ using Game1.Actors;
 using TreeSharp;
 using Artemis;
 using Artemis.Interface;
-using Microsoft.Xna.Framework;
 
 namespace Game1.Comps
 {
+    public enum Faction { GOOD, EVIL };
+
     public class ThingComp: IComponent
     {
-        public Vector2 TargetMove = Vector2.Zero;
         public bool Active = true;
         public bool Visible = true;
+
+        public Color Color = Color.White;
+
+        public Faction Faction = Faction.GOOD;
+
+        public double Health = 100;
 
         public List<ThingComp> Children = new List<ThingComp>();
 
         /// <summary>
-        /// this Thing can be attached to a parent Thing, if null then not attached.
+        /// this ThingComp can be attached to a parent ThingComp, if null then not attached.
         /// </summary>
         public ThingComp Parent = null;
 
@@ -38,9 +44,9 @@ namespace Game1.Comps
         public bool IsCollisionFree = true;
 
         /// <summary>
-        /// Determines what intensity levels of background pixel color this Thing can pass.
+        /// Determines what intensity levels of background pixel color this ThingComp can pass.
         /// Intensity is the sum of R,G,B bytes of pixel. Any background pixel at threshold value or
-        /// brighter is passable for this Thing.
+        /// brighter is passable for this ThingComp.
         /// </summary>
         public int PassableIntensityThreshold;
 
@@ -124,7 +130,7 @@ namespace Game1.Comps
         private Rectangle boundingRectangle = new Rectangle();
 
         /// <summary>
-        /// the bounding rectangle of the sprite of this Thing
+        /// the bounding rectangle of the sprite of this ThingComp
         /// </summary>
         protected Rectangle BoundingRectangle
         {
@@ -152,12 +158,7 @@ namespace Game1.Comps
         public float TargetSpeed = 10f;
 
         /// <summary>
-        /// the target move delta for current Update() round
-        /// </summary>
-        public Vector2 TargetMove = Vector2.Zero;
-
-        /// <summary>
-        /// the Toy that is carried by and active for this Thing, or null if none
+        /// the Toy that is carried by and active for this ThingComp, or null if none
         /// </summary>
         public Toy ToyActive = null;
 
@@ -170,34 +171,19 @@ namespace Game1.Comps
         protected Color[] textureData;
         protected LevelBackground bg;
 
-        // used for thing-to-thing collisions
-        private static List<ThingComp> allThingsList = new List<ThingComp>();
-
         public ThingComp()
         {
-        }
-
-        protected override void OnNewParent()
-        {
-            bg = Level.Current.Background;
-            if(!IsCollisionFree && !allThingsList.Contains(this))
-                allThingsList.Add(this);
-        }
-
-        protected virtual void OnUpdate(ScriptContext p)
-        {
-
         }
 
         /// <summary>
         /// detect all collisions with other collidable Things (that have IsCollisionFree=false set)
         /// </summary>
-        /// <param name="myPotentialMove">a potential move of this Thing, collision checked after applying potential move.</param>
+        /// <param name="myPotentialMove">a potential move of this ThingComp, collision checked after applying potential move.</param>
         /// <returns></returns>
-        public List<Thing> DetectCollisions(Vector2 myPotentialMove)
+        public List<ThingComp> DetectCollisions(Vector2 myPotentialMove)
         {
-            List<Thing> l = new List<Thing>();
-            foreach (Thing t in allThingsList)
+            List<ThingComp> l = new List<ThingComp>();
+            foreach (ThingComp t in allThingsList)
             {
                 if (t == this) continue;
                 if (!t.Active) continue;
@@ -210,11 +196,11 @@ namespace Game1.Comps
             return l;
         }
 
-        public Thing FindNearest(Type thingType)
+        public ThingComp FindNearest(Type thingType)
         {
-            Thing foundThing = null;
+            ThingComp foundThing = null;
             float bestDist = 99999999f;
-            foreach (Thing t in allThingsList)
+            foreach (ThingComp t in allThingsList)
             {
                 if (t == this) continue;
                 if (!t.Active) continue;
@@ -232,12 +218,12 @@ namespace Game1.Comps
             return foundThing;
         }
 
-        public bool Collides(Thing other)
+        public bool Collides(ThingComp other)
         {
             return IntersectPixels(BoundingRectangle, textureData, other.BoundingRectangle, other.textureData );
         }
 
-        public bool CollidesWhenThisMoves(Thing other, Vector2 myPotentialMove)
+        public bool CollidesWhenThisMoves(ThingComp other, Vector2 myPotentialMove)
         {
             Rectangle rectNow = BoundingRectangle;
             Rectangle rectMoved = new Rectangle(rectNow.X + (int) Math.Round(myPotentialMove.X) ,
@@ -246,7 +232,7 @@ namespace Game1.Comps
             return IntersectPixels(rectMoved, textureData, other.BoundingRectangle, other.textureData);
         }
 
-        public bool CollidesWhenOtherMoves(Thing other, Vector2 othersPotentialMove)
+        public bool CollidesWhenOtherMoves(ThingComp other, Vector2 othersPotentialMove)
         {
             Rectangle rectOther = other.BoundingRectangle;
             Rectangle rectMoved = new Rectangle(rectOther.X + (int)Math.Round(othersPotentialMove.X),
@@ -256,24 +242,24 @@ namespace Game1.Comps
         }
 
         /// <summary>
-        /// check whether this Thing would collide with anything (Thing or background), when attempting
+        /// check whether this ThingComp would collide with anything (ThingComp or background), when attempting
         /// to do a given move
         /// </summary>
-        /// <param name="potentialMove">the move to attempt for this Thing</param>
-        /// <returns>true if Thing would collide with something after the potentialMove would have been made, false otherwise</returns>
+        /// <param name="potentialMove">the move to attempt for this ThingComp</param>
+        /// <returns>true if ThingComp would collide with something after the potentialMove would have been made, false otherwise</returns>
         public bool CollidesWithSomething(Vector2 potentialMove)
         {
             if (CollidesWithBackground(potentialMove))
                 return true;
-            List<Thing> lt = DetectCollisions(potentialMove);
+            List<ThingComp> lt = DetectCollisions(potentialMove);
             return  lt.Count > 0 ;
         }
 
         /// <summary>
-        /// check whether this Thing would collide with background, when attempting to do a given potential move
+        /// check whether this ThingComp would collide with background, when attempting to do a given potential move
         /// </summary>
         /// <param name="potentialMove">the move vector, delta from current Target, that we would like to apply</param>
-        /// <returns>true if Thing would collide with background after a potentialMove would have been made, false otherwise</returns>
+        /// <returns>true if ThingComp would collide with background after a potentialMove would have been made, false otherwise</returns>
         public bool CollidesWithBackground(Vector2 potentialMove)
         {
             int posX = TargetX + (int)Math.Round(potentialMove.X);
@@ -384,15 +370,6 @@ namespace Game1.Comps
             return false;
         }
 
-        public void SetColors(float cyclePeriod, Color minColor, Color maxColor)
-        {
-            ColorCycleComp cycl = new ColorCycleComp(cyclePeriod);
-            cycl.minColor = minColor;
-            cycl.maxColor = maxColor;
-            //cycl.timePeriodR = cyclePeriod * RandomMath.RandomBetween(1.02f, 1.537f); ;
-            //cycl.timePeriodG = cyclePeriod * RandomMath.RandomBetween(0.7f, 0.93f); ;
-            Add(cycl);
-        }
 
     }
 }

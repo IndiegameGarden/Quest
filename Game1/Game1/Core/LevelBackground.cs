@@ -13,7 +13,7 @@ namespace Game1
     /// <summary>
     /// the level bitmap that scrolls around the player's view
     /// </summary>
-    public class LevelBackground: Thing
+    public class LevelBackground: ThingComp
     {
         /// <summary>
         /// background color is the non-passable color of the level borders and also the color

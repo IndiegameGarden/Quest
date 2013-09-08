@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework;
 namespace Game1.Behaviors
 {
     /// <summary>
-    /// lets a Thing push another Thing and being pushed
+    /// lets a ThingComp push another ThingComp and being pushed
     /// </summary>
     public class PushComp: Comp
     {
@@ -52,9 +52,9 @@ namespace Game1.Behaviors
                     dif.X = 0f;
                 dif.Normalize();
                	
-                // if that square is taken, transfer my push to the Thing there with my own Force
-                List<Thing> lt = ParentThing.DetectCollisions(dif);
-                foreach (Thing t in lt)
+                // if that square is taken, transfer my push to the ThingComp there with my own Force
+                List<ThingComp> lt = ParentThing.DetectCollisions(dif);
+                foreach (ThingComp t in lt)
                 {
                     t.Pushing.BePushed(dif);
                 }

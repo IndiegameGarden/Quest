@@ -10,7 +10,7 @@ namespace Game1.Actors
     /**
      * companion of the hero that helps him
      */
-    public class Companion: Thing
+    public class Companion: ThingComp
     {
         public ChaseBehavior  ChasingRedGuard, ChasingHero;
         public CombatBehavior Combat;     
@@ -40,12 +40,12 @@ namespace Game1.Actors
             ChasingHero = new ChaseBehavior(Level.Current.pixie);
             ChasingHero.ChaseRange = 370f;
             ChasingHero.SatisfiedRange = 6f;
-            ChasingHero.MoveSpeed = RandomMath.RandomBetween(1.2f, 1.5f);
+            ChasingHero.MoveDeltaTime = RandomMath.RandomBetween(1.2f, 1.5f);
             sub.Add(ChasingHero);
 
             ChasingRedGuard = new ChaseBehavior(typeof(RedGuard));
             ChasingRedGuard.ChaseRange = 20f;
-            ChasingRedGuard.MoveSpeed = RandomMath.RandomBetween(1.1f, 1.5f);
+            ChasingRedGuard.MoveDeltaTime = RandomMath.RandomBetween(1.1f, 1.5f);
             sub.Add(ChasingRedGuard);
 
             Attacking = new AttackBehavior(Level.Current.pixie);
@@ -53,7 +53,7 @@ namespace Game1.Actors
             sub.Add(Attacking);
 
             Wandering = new RandomWanderBehavior(2.7f, 11.3f);
-            Wandering.MoveSpeed = RandomMath.RandomBetween(0.09f, 0.25f);
+            Wandering.MoveDeltaTime = RandomMath.RandomBetween(0.09f, 0.25f);
             sub.Add(Wandering);
             
         }

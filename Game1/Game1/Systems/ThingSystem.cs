@@ -16,15 +16,15 @@ namespace Game1.Systems
     {
         public override void Process(Entity entity, ThingComp comp, PositionComp Motion)
         {
-            // update position of the smooth motion of this Thing in the TTengine
-            // update position when attached to a parent Thing
+            // update position of the smooth motion of this ThingComp in the TTengine
+            // update position when attached to a parent ThingComp
             if (comp.Parent != null)
             {
                 comp.Target = comp.Parent.Target + comp.AttachmentPosition;
                 Motion.Position = /*Scale.ScaleAbs * */ comp.FromPixels(comp.AttachmentPosition);
             }
             else
-            {   // not attached to a parent Thing
+            {   // not attached to a parent ThingComp
                 Motion.Position = Screen.Center + Motion.ScaleAbs * (FromPixels(Position - ViewPos)); // TODO ViewPos smoothing using Draw cache?
                 //Motion.Position = Position - ViewPos; // alternative to above
             }
@@ -36,16 +36,16 @@ namespace Game1.Systems
                 comp.FacingDirection.Normalize();
             }
 
-            // take steering inputs if any, and move Thing, applying collision detection
+            // take steering inputs if any, and move ThingComp, applying collision detection
             if (comp.TargetMove.LengthSquared() > 0f)
             {
                 // check if passable...
-                List<Thing> cols = DetectCollisions(TargetMove);
+                List<ThingComp> cols = DetectCollisions(TargetMove);
 
                 if (!IsCollisionFree && Pushing != null && !IsCollisionFree && cols.Count > 0 && Pushing.Force > 0f)
                 {
                     // no - so try to push neighbouring things away
-                    foreach (Thing t in cols)
+                    foreach (ThingComp t in cols)
                     {
                         if (t.Pushing != null)
                             t.Pushing.BePushed(TargetMove);
@@ -59,11 +59,11 @@ namespace Game1.Systems
                     if (!IsCollisionFree)
                     {
                         // check all attached Things too                        
-                        foreach (Thing g in Children)
+                        foreach (ThingComp g in Children)
                         {
                             if (g.Visible)
                             {
-                                Thing t = g as Thing;
+                                ThingComp t = g as ThingComp;
                                 if (t.IsCollisionFree) continue;
 
                                 // first, test if hits background
@@ -74,7 +74,7 @@ namespace Game1.Systems
                                 }
 
                                 // if not, test if it hits others
-                                List<Thing> colsChild = t.DetectCollisions(TargetMove);
+                                List<ThingComp> colsChild = t.DetectCollisions(TargetMove);
                                 if (colsChild.Count > 0)
                                 {
                                     ok = false;
@@ -83,7 +83,7 @@ namespace Game1.Systems
                             }
                         }
                     }
-                    // if there are no objections of main Thing (or its attachment) to the move, then move.
+                    // if there are no objections of main ThingComp (or its attachment) to the move, then move.
                     if (ok)
                     {
                         Target += TargetMove;

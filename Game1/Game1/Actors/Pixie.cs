@@ -5,67 +5,35 @@ using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Game1;
 using Game1.Behaviors;
+using Game1.Comps;
+using Game1.Factories;
+using Artemis;
 
 namespace Game1.Actors
 {
-    public class Pixie: Thing
+    public class Pixie
     {
 
-        public List<Companion> Companions = new List<Companion>();
+        public static Entity Create()
+        {
+            var e = GameFactory.CreateThing();
+            var tc = e.GetComponent<ThingComp>();
 
-        protected float health = 10f;
-
-        public Pixie()
-            : base("pixie")
-        {            
-            IsCollisionFree = false;
-            SetColors(4f, Color.DarkGoldenrod, new Color(230, 210, 10));
-            Velocity = 1.5f;
-
-            //SubsumptionBehavior sub = new SubsumptionBehavior();
-            //Add(sub);
-
-            /*
-            ChaseBehavior avoidBoss = new ChaseBehavior(Level.Current.boss);
-            avoidBoss.ChaseRange = 7f;
-            avoidBoss.Avoidance = true;
-            Add(avoidBoss);
-             */
+            tc.IsCollisionFree = false;
+            e.AddComponent(GameFactory.CreateColorCycling(4f, Color.DarkGoldenrod, new Color(230, 210, 10)));
+            tc.Velocity = 1.5f;
 
             Pushing.Force = 10f; // force higher than companions.
 
         }
 
-        public float Health
-        {
-            get
-            {
-                return health;
-            }
-
-            set
-            {
-                health = value;
-                if (health <= 0f)
-                    Level.Current.LoseLevel();
-            }
-        }
-
+        /*
         public void LeadAttack()
         {
             foreach (Companion c in Companions)
                 c.Attacking.TriggerAttack();
         }
-
-        protected override void OnDraw(ref DrawParams p)
-        {
-            base.OnDraw(ref p);
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-        }
+         */
 
     }
 }

@@ -19,10 +19,6 @@ namespace TTengine.Core
         /// </summary>
         public Entity Entity;
 
-        /// <summary>The component in this Entity, triggering the AI execution</summary>
-        /// 
-        public BTAIComp Comp;
-        
         /// <summary>
         /// A globally kept simulation time value in seconds, 0f is start of simulation
         /// </summary>
@@ -50,7 +46,6 @@ namespace TTengine.Core
             SimTime = other.SimTime;
             Dt = other.Dt;
             Entity = other.Entity;
-            Comp = other.Comp;
         }
 
     }

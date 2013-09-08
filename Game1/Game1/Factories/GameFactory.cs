@@ -10,6 +10,7 @@ using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Behaviors;
 using TTengine.Modifiers;
+using Game1.Comps;
 
 namespace Game1.Factories
 {
@@ -62,6 +63,13 @@ namespace Game1.Factories
             return CreateThing("pixie");
         }
 
+        public static ColorCycleComp CreateColorCycling(float cyclePeriod, Color minColor, Color maxColor)
+        {
+            ColorCycleComp cycl = new ColorCycleComp(cyclePeriod);
+            cycl.minColor = minColor;
+            cycl.maxColor = maxColor;
+            return cycl;
+        }
 
     }
 }

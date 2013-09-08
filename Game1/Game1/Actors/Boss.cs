@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Game1.Actors
 {
-    public class Boss: Thing
+    public class Boss: ThingComp
     {
         public ChaseBehavior Chasing;
 
@@ -17,7 +17,7 @@ namespace Game1.Actors
 
             // chase hero
             Chasing = new ChaseBehavior(Level.Current.pixie);
-            Chasing.MoveSpeed = RandomMath.RandomBetween(0.18f, 0.22f);
+            Chasing.MoveDeltaTime = RandomMath.RandomBetween(0.18f, 0.22f);
             Chasing.ChaseRange = 26f; // RandomMath.RandomBetween(12f, 40f);
             Add(Chasing);
 

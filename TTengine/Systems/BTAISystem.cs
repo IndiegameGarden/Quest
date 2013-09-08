@@ -31,7 +31,6 @@ namespace TTengine.Systems
         public override void Process(Entity entity, BTAIComp btComp)
         {
             updParams.Entity = entity;
-            updParams.Comp = btComp;
 
             if (btComp.rootNode.LastStatus == null)
                 btComp.rootNode.Start(updParams);
