@@ -18,26 +18,24 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 2)]
     public class BTAISystem : EntityComponentProcessingSystem<BTAIComp>
     {
-        private BTAIContext updParams = new BTAIContext();
+        private BTAIContext ctx = new BTAIContext();
 
-        protected override void ProcessEntities(IDictionary<int, Entity> entities)
+        protected override void Begin()
         {
             // once per update-cycle, set timing in updParams
-            updParams.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
-            updParams.SimTime += updParams.Dt;
-            base.ProcessEntities(entities);
+            ctx.Dt = TimeSpan.FromTicks(this.EntityWorld.Delta).TotalSeconds;
+            ctx.SimTime += ctx.Dt;
         }
 
         public override void Process(Entity entity, BTAIComp btComp)
         {
-            updParams.Entity = entity;
+            ctx.Entity = entity;
 
             if (btComp.rootNode.LastStatus == null)
-                btComp.rootNode.Start(updParams);
-            if (btComp.rootNode.LastStatus == RunStatus.Success)
-                btComp.rootNode.Start(updParams);
-            // TODO rename UpdateParams/updParams?
-            btComp.rootNode.Tick(updParams);
+                btComp.rootNode.Start(ctx);
+            else if (btComp.rootNode.LastStatus == RunStatus.Success)
+                btComp.rootNode.Start(ctx);
+            btComp.rootNode.Tick(ctx);
 
         }
 

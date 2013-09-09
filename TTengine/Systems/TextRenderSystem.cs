@@ -60,18 +60,19 @@ namespace TTengine.Systems
     {
 
         protected ScreenComp activeScreen = null;
+        double dt = 0;
 
         protected override void Begin()
         {
-            base.Begin();
             activeScreen = TTGame.Instance.DrawScreen;
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
         }
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
         public override void Process(Entity entity, TextComp textComp, PositionComp posComp, DrawComp drawComp)
         {
-            textComp.UpdateComp(this);
+            textComp.UpdateComp(dt);
             if (drawComp.IsVisible)
             {
                 // use set screen, or default if not given.

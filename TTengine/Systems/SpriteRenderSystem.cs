@@ -63,7 +63,6 @@ namespace TTengine.Systems
 
         protected override void Begin()
         {
-            base.Begin();
             activeScreen = TTGame.Instance.DrawScreen;
         }
 

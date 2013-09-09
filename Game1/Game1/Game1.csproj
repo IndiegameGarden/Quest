@@ -117,21 +117,19 @@
     <Compile Include="Actors\Servant.cs" />
     <Compile Include="Behaviors\AlwaysTurnRightBehavior.cs" />
     <Compile Include="Behaviors\AttackBehavior.cs" />
-    <Compile Include="Behaviors\BlinkBehaviour.cs" />
     <Compile Include="Behaviors\ChaseBehavior.cs" />
     <Compile Include="Behaviors\AttackEnemyBehavior.cs" />
     <Compile Include="Comps\ColorCycleComp.cs" />
     <Compile Include="Behaviors\CombatBehavior.cs" />
     <Compile Include="Comps\PushComp.cs" />
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />
-    <Compile Include="Behaviors\ReverseControlBehavior.cs" />
-    <Compile Include="Behaviors\SubsumptionBehavior.cs" />
+    <Compile Include="Comps\RandomWanderComp.cs" />
     <Compile Include="Comps\ThingComp.cs" />
     <Compile Include="Core\GameMusic.cs" />
     <Compile Include="Core\GameSound.cs" />
     <Compile Include="Core\Level.cs" />
     <Compile Include="Core\LevelBackground.cs" />
-    <Compile Include="Core\ThingControl.cs" />
+    <Compile Include="Comps\ThingControlComp.cs" />
     <Compile Include="Core\Toy.cs" />
     <Compile Include="Factories\GameFactory.cs" />
     <Compile Include="Program.cs">
@@ -140,6 +138,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Systems\ColorCycleSystem.cs" />
+    <Compile Include="Systems\RandomWanderSystem.cs" />
     <Compile Include="Systems\ThingSystem.cs" />
   </ItemGroup>
   <ItemGroup>

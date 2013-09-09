@@ -20,7 +20,7 @@ namespace TTengine.Core
         public Entity Entity;
 
         /// <summary>
-        /// A globally kept simulation time value in seconds, 0f is start of simulation
+        /// A globally kept simulation time value in seconds, 0 is start time of BTAISystem
         /// </summary>
         public double SimTime = 0.0;
         

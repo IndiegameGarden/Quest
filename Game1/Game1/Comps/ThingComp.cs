@@ -33,6 +33,8 @@ namespace Game1.Comps
 
         public List<ThingComp> Children = new List<ThingComp>();
 
+        public Vector2 TargetMove = Vector2.Zero;
+
         /// <summary>
         /// this ThingComp can be attached to a parent ThingComp, if null then not attached.
         /// </summary>
@@ -49,11 +51,6 @@ namespace Game1.Comps
         /// brighter is passable for this ThingComp.
         /// </summary>
         public int PassableIntensityThreshold;
-
-        /// <summary>
-        /// centre of screen viewing pos in pixels for ALL PixieSpritelets
-        /// </summary>
-        public static Vector2 ViewPos = Vector2.Zero;
 
         /// <summary>
         /// position in the level, in pixels, in sub-pixel resolution
@@ -109,7 +106,7 @@ namespace Game1.Comps
         public Vector2 Target = Vector2.Zero;
 
         /// <summary>
-        /// a direction (if any) the entity is facing towards e.g. up (0,-1), down (0,1) or right (1,0).
+        /// a direction (if any) the Thing is facing towards e.g. up (0,-1), down (0,1) or right (1,0).
         /// </summary>
         public Vector2 FacingDirection = new Vector2(1f, 0f);
 
@@ -130,7 +127,7 @@ namespace Game1.Comps
         private Rectangle boundingRectangle = new Rectangle();
 
         /// <summary>
-        /// the bounding rectangle of the sprite of this ThingComp
+        /// the bounding rectangle of the sprite of this Thing, based on Position
         /// </summary>
         protected Rectangle BoundingRectangle
         {
@@ -162,11 +159,6 @@ namespace Game1.Comps
         /// </summary>
         public Toy ToyActive = null;
 
-        /// <summary>
-        /// things can push and be pushed by others. If set to null, it can't be pushed anymore.
-        /// </summary>
-        public PushComp Pushing;
-
         // used for the collision detection per-pixel
         protected Color[] textureData;
         protected LevelBackground bg;
@@ -187,7 +179,6 @@ namespace Game1.Comps
             {
                 if (t == this) continue;
                 if (!t.Active) continue;
-                if (!t.Visible) continue;        
                 if (CollidesWhenThisMoves(t,myPotentialMove))
                 {
                     l.Add(t);
@@ -204,7 +195,6 @@ namespace Game1.Comps
             {
                 if (t == this) continue;
                 if (!t.Active) continue;
-                if (!t.Visible) continue;
                 if (t.GetType() == thingType)
                 {
                     float dist = (t.Position - this.Position).Length();

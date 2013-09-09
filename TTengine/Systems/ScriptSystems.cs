@@ -16,11 +16,17 @@ namespace TTengine.Systems
     public class ScriptSystemUpdate : EntityComponentProcessingSystem<ScriptComp>
     {
         static ScriptContext ctx = new ScriptContext();
+        double dt = 0;
+
+        protected override void Begin()
+        {
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+        }
 
         public override void Process(Entity entity, ScriptComp sc)
         {
             if (!sc.IsActive) return;
-            sc.UpdateComp(this);
+            sc.UpdateComp(dt);
             ctx.ScriptComp = sc;
             ctx.Entity = entity;
             foreach(var script in sc.Scripts)

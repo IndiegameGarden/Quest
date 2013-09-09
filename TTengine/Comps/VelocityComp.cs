@@ -76,12 +76,6 @@ namespace TTengine.Comps
             }
         }
 
-        /// <summary>
-        /// A steering/movement direction input written here by an AI or user input system.
-        /// TODO Not directly influencing Velocity, another (custom) system should do that.
-        /// </summary>
-        public Vector2 SteeringDirection = Vector2.Zero;
-
         /*
         /// <summary>Initializes a new instance of the <see cref="VelocityComp" /> class.</summary>
         /// <param name="velocity">The velocity.</param>
