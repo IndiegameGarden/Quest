@@ -29,15 +29,18 @@ namespace Game1.Comps
 
         public Faction Faction = Faction.GOOD;
 
+        /// <summary>
+        /// other Things can be attached to this Thing: the Children.
+        /// </summary>
         public List<ThingComp> Children = new List<ThingComp>();
 
         /// <summary>
-        /// this ThingComp can be attached to a parent ThingComp, if null then not attached.
+        /// this Thing can be attached to a parent Thing, if null then not attached.
         /// </summary>
         public ThingComp Parent = null;
 
         /// <summary>
-        /// if true can pass anything
+        /// if true can pass anything without colliding
         /// </summary>
         public bool IsCollisionFree = true;
 
@@ -76,7 +79,6 @@ namespace Game1.Comps
             get { return (int)Math.Round(Position.Y); }
             set { Position.Y = (float)value; }
         }
-
 
         /// <summary>
         /// Target.X as a rounded integer
@@ -134,6 +136,11 @@ namespace Game1.Comps
             }
         }
 
+        /// <summary>
+        /// Set width and height of the bounding rectangle of this Thing
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void SetBoundingRectangleWidthHeight(int width, int height)
         {
             boundingRectangle.Width = width;
@@ -151,7 +158,7 @@ namespace Game1.Comps
         public float TargetSpeed = 10f;
 
         /// <summary>
-        /// the Toy that is carried by and active for this ThingComp, or null if none
+        /// the Toy that is carried by and active for this Thing, or null if none
         /// </summary>
         public Toy ToyActive = null;
 
