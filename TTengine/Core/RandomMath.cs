@@ -13,7 +13,7 @@ using System;
 using Microsoft.Xna.Framework;
 #endregion
 
-namespace TTengine.Util
+namespace TTengine.Core
 {
     /// <summary>
     /// Static methods to assist with random-number generation.

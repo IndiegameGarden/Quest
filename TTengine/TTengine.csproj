@@ -113,7 +113,6 @@
     <Compile Include="Comps\DrawComp.cs" />
     <Compile Include="Comps\TextComp.cs" />
     <Compile Include="Comps\VelocityComp.cs" />
-    <Compile Include="Core\Behavior.cs" />
     <Compile Include="Core\Channel.cs" />
     <Compile Include="Core\ChannelManager.cs" />
     <Compile Include="Core\Comp.cs" />
@@ -154,7 +153,7 @@
     <Compile Include="TreeSharp\Wait.cs" />
     <Compile Include="Util\MsgBox.cs" />
     <Compile Include="Util\FrameRateCounter.cs" />
-    <Compile Include="Util\RandomMath.cs" />
+    <Compile Include="Core\RandomMath.cs" />
     <Compile Include="Util\TTutil.cs" />
   </ItemGroup>
   <ItemGroup>

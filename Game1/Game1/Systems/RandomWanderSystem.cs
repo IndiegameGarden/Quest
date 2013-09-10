@@ -7,7 +7,7 @@ using Artemis.Manager;
 using Artemis.Attributes;
 using Game1.Comps;
 using TTengine.Comps;
-using TTengine.Util;
+using TTengine.Core;
 
 namespace Game1.Systems
 {
