@@ -37,6 +37,19 @@ namespace TTengine.Systems
                 btComp.rootNode.Start(ctx);
             btComp.rootNode.Tick(ctx);
 
+            // after every BTAI Tree execution, check which comps are enabled/disabled as a result
+            foreach (var c in btComp.CompsToDisable)
+            {
+                if (!btComp.CompsToEnable.Contains(c))
+                    c.IsActive = false;
+            }
+            // 'enable' request always higher priority than a 'disable' request.
+            foreach (var c in btComp.CompsToEnable)
+            {
+                c.IsActive = true;
+            }
+            btComp.CompsToEnable.Clear();
+            btComp.CompsToDisable.Clear();
         }
 
     }

@@ -29,11 +29,7 @@ namespace Game1.Comps
 
         public Faction Faction = Faction.GOOD;
 
-        public double Health = 100;
-
         public List<ThingComp> Children = new List<ThingComp>();
-
-        public Vector2 TargetMove = Vector2.Zero;
 
         /// <summary>
         /// this ThingComp can be attached to a parent ThingComp, if null then not attached.

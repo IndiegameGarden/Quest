@@ -14,25 +14,18 @@ namespace TTengine.Core
     /// </summary>
     public class BTAIContext
     {
-        /// <summary>
-        /// The Entity being updated
-        /// </summary>
+        /// <summary>The Entity being updated</summary>
         public Entity Entity;
 
-        /// <summary>
-        /// A globally kept simulation time value in seconds, 0 is start time of BTAISystem
-        /// </summary>
+        /// <summary>The BTAIComp of Entity, which triggers BTAI processing</summary>
+        public BTAIComp BTComp;
+
+        /// <summary>Globally kept simulation time value in seconds, 0 is start time of BTAISystem</summary>
         public double SimTime = 0.0;
         
-        /// <summary>
-        /// Delta t, the simulation time passed since last Update() in seconds.
-        /// Equal to Delta time from the EntityWorld.
-        /// </summary>
+        /// <summary>Delta t, the simulation time passed since last Update() in seconds. Equal to Delta time from the EntityWorld.</summary>
         public double Dt = 0.0;
 
-        /// <summary>
-        /// create with null or default values
-        /// </summary>
         public BTAIContext()
         {
         }
@@ -44,6 +37,7 @@ namespace TTengine.Core
         public void CopyFrom(BTAIContext other)
         {
             SimTime = other.SimTime;
+            BTComp = other.BTComp;
             Dt = other.Dt;
             Entity = other.Entity;
         }
