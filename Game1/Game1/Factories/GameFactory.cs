@@ -39,10 +39,11 @@ namespace Game1.Factories
 
         protected Random rnd = new Random();
 
-        public static Entity CreateThing(string bitmap)
+        public static Entity CreateThing(bool hasControls, string bitmap)
         {
             var e = TTFactory.CreateSpritelet(bitmap);
-            e.AddComponent(new ThingComp());
+            var thing = new ThingComp();
+            e.AddComponent(thing);
 
             SpriteComp sc = e.GetComponent<SpriteComp>();
 
@@ -58,9 +59,9 @@ namespace Game1.Factories
             return e;
         }
 
-        public static Entity CreateThing()
+        public static Entity CreateThing(bool hasControls)
         {
-            return CreateThing("pixie");
+            return CreateThing(hasControls,"pixie");
         }
 
         public static ColorCycleComp CreateColorCycling(float cyclePeriod, Color minColor, Color maxColor)

@@ -13,9 +13,9 @@ namespace Game1.Actors
     public class Companion: ThingComp
     {
         public ChaseBehavior  ChasingRedGuard, ChasingHero;
-        public CombatBehavior Combat;     
+        //public CombatBehavior Combat;     
         public RandomWanderBehavior Wandering;
-        public AttackBehavior Attacking;
+        //public AttackBehavior Attacking;
 
         public static Companion Create()
         {

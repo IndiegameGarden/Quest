@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +14,7 @@ namespace Game1
     /// <summary>
     /// the level bitmap that scrolls around the player's view
     /// </summary>
-    public class LevelBackground: ThingComp
+    public class LevelBackgroundComp: SpriteComp
     {
         /// <summary>
         /// background color is the non-passable color of the level borders and also the color
@@ -27,12 +28,9 @@ namespace Game1
         /// </summary>
         public Color ForegroundColor = Color.White;
 
-        SpriteBatch spriteBatch;
-
-        public LevelBackground(string bitmapFileName)
+        public LevelBackgroundComp(string bitmapFileName)
             : base(bitmapFileName)
         {
-            spriteBatch = new SpriteBatch(Screen.graphicsDevice);
         }
         
         public Color SamplePixel(Vector2 pos)
@@ -59,6 +57,7 @@ namespace Game1
             Texture.SetData<Color>(0, new Rectangle((int)Math.Round(pos.X), (int)Math.Round(pos.Y), 1, 1), data, 0, 1);
         }
 
+        /*
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
@@ -66,7 +65,9 @@ namespace Game1
             // update my on-screen position (shifting the big bitmap around to match middle point set)
             Motion.Position = Screen.Center - Motion.ScaleAbs * FromPixels(Position);            
         }
+         */
 
+        /*
         protected override void OnDraw(ref DrawParams p)
         {
             if (Texture != null)
@@ -77,9 +78,8 @@ namespace Game1
                        Motion.RotateAbs, Vector2.Zero, DrawInfo.DrawScale, SpriteEffects.None, DrawInfo.LayerDepth);
 
                 spriteBatch.End();
-            }
-            
-        }
+            }            
+        }*/
 
     }
 }

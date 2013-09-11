@@ -59,7 +59,7 @@ namespace Game1.Actors
             Vector2 pos = Target;
             int posX = (int) Math.Round(pos.X);
             int posY = (int) Math.Round(pos.Y);
-            LevelBackground bg = Level.Current.Background;
+            LevelBackgroundComp bg = Level.Current.Background;
             Vector2 pixPos;
             for (int x = posX - ExplosionRange; x <= posX + ExplosionRange; x++)            
             {
@@ -75,7 +75,7 @@ namespace Game1.Actors
         void OnExploding()
         {
             Vector2 pos = Target;
-            LevelBackground bg = Level.Current.Background;
+            LevelBackgroundComp bg = Level.Current.Background;
             Vector2 pixPos;
             pixPos.X = pos.X + RandomMath.RandomBetween(-ExplosionRange, ExplosionRange);
             pixPos.Y = pos.Y + RandomMath.RandomBetween(-ExplosionRange, ExplosionRange); 

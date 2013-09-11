@@ -22,7 +22,7 @@ namespace Game1.Behaviors
             ctx.BTComp.EnableComp(rwc);
 
             // take the computed move and apply to the move of this Thing
-            ctx.Entity.GetComponent<ThingComp>().TargetMove = rwc.TargetMove;
+            ctx.Entity.GetComponent<ThingControlComp>().TargetMove = rwc.TargetMove;
             yield return RunStatus.Success;
         }
 

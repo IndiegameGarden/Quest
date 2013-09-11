@@ -5,13 +5,14 @@ using Microsoft.Xna.Framework;
 using Game1.Actors;
 using Game1.Comps;
 using TTengine.Util;
+using TreeSharp;
 
 namespace Game1.Behaviors
 {
     /// <summary>
-    /// Attack any Thing that is in another faction than mine.
+    /// Attack any Thing that is in another faction than mine and not NEUTRAL.
     /// </summary>
-    public class AttackEnemyBehavior: ThingControl
+    public class AttackEnemyBehavior: TreeNode
     {
         public bool IsAttacking = false;
 
@@ -22,26 +23,28 @@ namespace Game1.Behaviors
             this.AttackStrings = attackStrings;
         }
 
-        protected override void OnNextMove(BTAIContext ctx) 
+        public override IEnumerable<RunStatus> Execute(object context)
         {
+            BTAIContext ctx = context as BTAIContext;
             ThingComp tc = ctx.Entity.GetComponent<ThingComp>();
 
             // only attack if not blocked there.
-            Vector2 dir = tc.FacingDirection;
             List<ThingComp> col = tc.DetectCollisions(tc.FacingDirection);
             foreach(var t in col) 
             {
-                if (t.Faction != tc.Faction)
+                if (t.Faction != tc.Faction && t.Faction != Faction.NEUTRAL)
                 {
                     IsAttacking = true;
-                    TargetMove = dir;
-                    IsTargetMoveDefined = true;
+                    ctx.Entity.GetComponent<ThingControlComp>().TargetMove = tc.FacingDirection;
 
                     // TODO color set! and health decrease values parameterize.
-                    Level.Current.Subtitles.Show(3, AttackStrings[RandomMath.RandomIntBetween(0, AttackStrings.Length - 1)], 3.5f, Color.IndianRed);
-                    t.Health -= RandomMath.RandomBetween(1f, 3f);
+                    Level.Current.Subtitles.Show(3, AttackStrings[RandomMath.RandomIntBetween(0, AttackStrings.Length - 1)], 3.5f, tc.Color);
+                    ctx.Entity.GetComponent<HealthComp>().DecreaseHealth( RandomMath.RandomBetween(1f, 3f) );
+                    yield return RunStatus.Success;
+                    yield break;
                 }
             }
+            yield return RunStatus.Failure;
         }
 
     }

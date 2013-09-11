@@ -116,11 +116,9 @@
     <Compile Include="Actors\RedGuard.cs" />
     <Compile Include="Actors\Servant.cs" />
     <Compile Include="Behaviors\AlwaysTurnRightBehavior.cs" />
-    <Compile Include="Behaviors\AttackBehavior.cs" />
     <Compile Include="Behaviors\ChaseBehavior.cs" />
     <Compile Include="Behaviors\AttackEnemyBehavior.cs" />
     <Compile Include="Comps\ColorCycleComp.cs" />
-    <Compile Include="Behaviors\CombatBehavior.cs" />
     <Compile Include="Comps\HealthComp.cs" />
     <Compile Include="Comps\PushComp.cs" />
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />

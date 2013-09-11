@@ -30,7 +30,7 @@ namespace Game1.Actors
             RandomWanderBehavior Wandering;
             AttackEnemyBehavior Attacking;
 
-            var e = GameFactory.CreateThing();
+            var e = GameFactory.CreateThing(true);
             var ai = new BTAIComp();
             e.AddComponent(ai);
             var sub = new PrioritySelector();
@@ -45,10 +45,12 @@ namespace Game1.Actors
             Attacking = new AttackEnemyBehavior(attackString);
 
             // chase companions that are very close
+            /*
             ChasingCompanions = new ChaseBehavior(typeof(Companion));
             ChasingCompanions.MoveDeltaTime = RandomMath.RandomBetween(0.43f, 0.65f);
             ChasingCompanions.ChaseRange = 1.5f; // RandomMath.RandomBetween(12f, 40f);
             sub.AddChild(ChasingCompanions);
+            */
 
             // chase hero
             ChasingHero = new ChaseBehavior(Level.Current.pixie);

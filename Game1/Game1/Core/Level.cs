@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using Game1.Actors;
 using Game1.Comps;
+using Artemis;
 
 namespace Game1
 {
@@ -48,11 +49,6 @@ namespace Game1
         public Color BackgroundColor = Color.Black;
 
         /// <summary>
-        /// level moves/scrolls behavior for TTengine
-        /// </summary>
-        public MotionBehavior MotionB;
-
-        /// <summary>
         /// level music object
         /// </summary> 
         public GameMusic Music;
@@ -65,7 +61,7 @@ namespace Game1
         /// <summary>
         /// background bitmap
         /// </summary>
-        public LevelBackground Background;
+        public LevelBackgroundComp Background;
 
         /// <summary>
         /// load items/toys/things to a level using a bitmap
@@ -75,8 +71,8 @@ namespace Game1
         /// <summary>
         /// our heroine Pixie
         /// </summary>
-        public ThingComp pixie;
-        public Boss boss;
+        public Entity pixie;
+        public Entity boss;
 
         public SubtitleManager Subtitles;
 
@@ -254,8 +250,6 @@ namespace Game1
 
         protected override void OnUpdate(ref UpdateParams p)
         {
-            base.OnUpdate(ref p);
-
             // important: reflect the global viewpos (for sprites to use)
             ThingComp.ViewPos = Background.Position;
 

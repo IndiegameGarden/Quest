@@ -18,7 +18,7 @@ using Artemis.Interface;
 
 namespace Game1.Comps
 {
-    public enum Faction { GOOD, EVIL };
+    public enum Faction { GOOD, EVIL, NEUTRAL };
 
     public class ThingComp: IComponent
     {
@@ -27,7 +27,7 @@ namespace Game1.Comps
 
         public Color Color = Color.White;
 
-        public Faction Faction = Faction.GOOD;
+        public Faction Faction = Faction.NEUTRAL;
 
         /// <summary>
         /// other Things can be attached to this Thing: the Children.
@@ -164,7 +164,7 @@ namespace Game1.Comps
 
         // used for the collision detection per-pixel
         protected Color[] textureData;
-        protected LevelBackground bg;
+        protected LevelBackgroundComp bg;
 
         public ThingComp()
         {
