@@ -18,6 +18,10 @@ namespace Game1
 
         public Vector2 TargetMoveMultiplier = new Vector2(1f, 1f);
 
+        public double DeltaTimeBetweenMoves = 0.2;
+
+        public double TimeBeforeNextMove = 0;
+
         public ThingControlComp()
         {
         }

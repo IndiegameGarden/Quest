@@ -50,7 +50,9 @@ namespace Game1.Behaviors
                         dif = targetTc.Position - tc.Target;
                         if (Avoidance)
                             dif = -dif;
-                        ctx.Entity.GetComponent<ThingControlComp>().TargetMove = dif;
+                        var tcc = ctx.Entity.GetComponent<ThingControlComp>();
+                        tcc.TargetMove = dif;
+                        tcc.DeltaTimeBetweenMoves = this.DeltaTimeBetweenMoves;
                         yield return RunStatus.Success;
                     }
                 }

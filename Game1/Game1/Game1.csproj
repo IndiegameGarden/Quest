@@ -135,6 +135,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestGame.cs" />
     <Compile Include="Systems\ColorCycleSystem.cs" />
+    <Compile Include="Systems\ThingControlSystem.cs" />
     <Compile Include="Systems\RandomWanderSystem.cs" />
     <Compile Include="Systems\ThingSystem.cs" />
   </ItemGroup>

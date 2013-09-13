@@ -46,24 +46,24 @@ namespace Game1.Actors
             // chase companions that are very close
             /*
             ChasingCompanions = new ChaseBehavior(typeof(Companion));
-            ChasingCompanions.MoveDeltaTime = RandomMath.RandomBetween(0.43f, 0.65f);
+            ChasingCompanions.DeltaTimeBetweenMoves = RandomMath.RandomBetween(0.43f, 0.65f);
             ChasingCompanions.ChaseRange = 1.5f; // RandomMath.RandomBetween(12f, 40f);
             sub.AddChild(ChasingCompanions);
             */
 
             // chase hero
             ChasingHero = new ChaseBehavior(Level.Current.pixie);
-            ChasingHero.MoveDeltaTime = RandomMath.RandomBetween(0.47f, 0.75f);
+            ChasingHero.DeltaTimeBetweenMoves = RandomMath.RandomBetween(0.47f, 0.75f);
             ChasingHero.ChaseRange = 15f; // RandomMath.RandomBetween(12f, 40f);
             sub.AddChild(ChasingHero);
 
             Turning = new AlwaysTurnRightBehavior(); // patrolling
-            Turning.MoveDeltaTime = ChasingHero.MoveDeltaTime; //RandomMath.RandomBetween(0.57f, 1.05f);
-            Turning.MoveDeltaTime = 0.7f;
+            Turning.DeltaTimeBetweenMoves = ChasingHero.DeltaTimeBetweenMoves; //RandomMath.RandomBetween(0.57f, 1.05f);
+            Turning.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Turning);
 
             Wandering = new RandomWanderBehavior(2.7f, 11.3f);
-            Wandering.MoveDeltaTime = 0.7f;
+            Wandering.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Wandering);
 
             e.Refresh();

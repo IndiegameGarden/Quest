@@ -4,9 +4,13 @@ using TreeSharp;
 
 namespace Game1.Core
 {
+    /// <summary>
+    /// Base class for all Behaviors, which are Behavior-Tree AI nodes that can be arranged in
+    /// a BT (AI) to control an Entity.
+    /// </summary>
     public class Behavior: TreeNode
     {
         /// <summary>The time (seconds) between two successive moves for this Behavior</summary>
-        public double MoveDeltaTime = 0.2;
+        public double DeltaTimeBetweenMoves = 0.2;
     }
 }

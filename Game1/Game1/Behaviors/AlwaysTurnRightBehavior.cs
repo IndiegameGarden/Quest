@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using TTengine.Core;
 using Microsoft.Xna.Framework;
 using TreeSharp;
+using Game1.Core;
 using Game1.Comps;
 
 namespace Game1.Behaviors
 {
-    /**
-     * always go forward and turn right when I can
-     */
-    public class AlwaysTurnRightBehavior: TreeNode
+    ///<summary>always go forward and turn right when I can</summary>
+    public class AlwaysTurnRightBehavior: Behavior
     {
         /// <summary>
         /// current direction of motion (e.g. along wall turning right). May be modified on the fly for sazzy effect.
@@ -39,6 +38,7 @@ namespace Game1.Behaviors
                 CurrentDirection = rightHandDirection;
                 didSeeWall = false;
                 tcc.TargetMove = CurrentDirection;
+                tcc.DeltaTimeBetweenMoves = this.DeltaTimeBetweenMoves;
                 isSuccess = true;
             }
 
@@ -51,6 +51,7 @@ namespace Game1.Behaviors
             else if (didSeeWall || !isRightHandFree || !isLeftHandFree || !isFrontFree)
             {
                 tcc.TargetMove = CurrentDirection;
+                tcc.DeltaTimeBetweenMoves = this.DeltaTimeBetweenMoves;
                 isSuccess = true;
             }
 
@@ -59,7 +60,6 @@ namespace Game1.Behaviors
 
             if (isSuccess)
             {
-                tcc.MoveTimeDelta = this.MoveTimeDelta;
                 yield return RunStatus.Success;
             }
             else
