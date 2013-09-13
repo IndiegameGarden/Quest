@@ -3,13 +3,12 @@ using TTengine.Core;
 using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
-using Game1;
+using Game1.Core;
 using Game1.Comps;
 using Game1.Behaviors;
 using TreeSharp;
 using Artemis;
 using Artemis.Interface;
-using Game1.Factories;
 
 namespace Game1.Actors
 {
@@ -71,19 +70,5 @@ namespace Game1.Actors
             return e;
         }
 
-        protected void OnUpdate(ScriptContext p)
-        {
-            if (TargetMove.LengthSquared() > 0)
-            {
-                if (CollidesWhenThisMoves(Level.Current.pixie, TargetMove))
-                {
-                    if (Level.Current.Subtitles.Children.Count <= 4)
-                    {
-                        Level.Current.Subtitles.Show(3, attackString[RandomMath.RandomIntBetween(0, attackString.Length - 1)], 3.5f, Color.IndianRed);
-                        Level.Current.pixie.Health -= RandomMath.RandomBetween(1f, 3f);
-                    }
-                }
-            }
-        }
     }
 }

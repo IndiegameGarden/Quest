@@ -107,14 +107,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\Block.cs" />
-    <Compile Include="Actors\BombMissile.cs" />
-    <Compile Include="Actors\Boss.cs" />
-    <Compile Include="Actors\Companion.cs" />
     <Compile Include="Actors\Pixie.cs" />
-    <Compile Include="Actors\Princess.cs" />
     <Compile Include="Actors\RedGuard.cs" />
-    <Compile Include="Actors\Servant.cs" />
     <Compile Include="Behaviors\AlwaysTurnRightBehavior.cs" />
     <Compile Include="Behaviors\ChaseBehavior.cs" />
     <Compile Include="Behaviors\AttackEnemyBehavior.cs" />
@@ -124,18 +118,22 @@
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />
     <Compile Include="Comps\RandomWanderComp.cs" />
     <Compile Include="Comps\ThingComp.cs" />
+    <Compile Include="Core\Behavior.cs" />
     <Compile Include="Core\GameMusic.cs" />
     <Compile Include="Core\GameSound.cs" />
     <Compile Include="Core\Level.cs" />
     <Compile Include="Core\LevelBackground.cs" />
     <Compile Include="Comps\ThingControlComp.cs" />
+    <Compile Include="Core\SubtitleManager.cs" />
+    <Compile Include="Core\SubtitleText.cs" />
     <Compile Include="Core\Toy.cs" />
-    <Compile Include="Factories\GameFactory.cs" />
+    <Compile Include="Core\GameFactory.cs" />
+    <Compile Include="Levels\QuestLevel.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="QuestGame.cs" />
     <Compile Include="Systems\ColorCycleSystem.cs" />
     <Compile Include="Systems\RandomWanderSystem.cs" />
     <Compile Include="Systems\ThingSystem.cs" />
@@ -152,6 +150,10 @@
     <ProjectReference Include="..\..\TTengine\TTengine.csproj">
       <Project>{616035D5-3927-44CD-BD41-2EEE846AC3A3}</Project>
       <Name>TTengine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\TTMusicEngine\TTMusicEngine.csproj">
+      <Project>{CB99D0C9-FD0E-4B90-91BD-7D5816B38A2C}</Project>
+      <Name>TTMusicEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\Game1Content\Game1Content.contentproj">
       <Name>Game1Content %28Content%29</Name>
@@ -186,9 +188,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Levels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

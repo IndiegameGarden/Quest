@@ -16,19 +16,19 @@ using TTengine.Util;
 using Artemis;
 using TreeSharp;
 
-using Game1.Factories;
+using Game1.Core;
 
 namespace Game1
 {
     /// <summary>
     /// Main game class, using TTGame template
     /// </summary>
-    public class Game1 : TTGame
+    public class QuestGame : TTGame
     {
         public GameFactory Factory;
         Channel titleChannel, gameChannel;
 
-        public Game1()
+        public QuestGame()
         {
             GraphicsMgr.IsFullScreen = false;
             GraphicsMgr.PreferredBackBufferWidth = 1024; 

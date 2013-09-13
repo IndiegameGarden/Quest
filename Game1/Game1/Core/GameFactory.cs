@@ -12,7 +12,7 @@ using TTengine.Behaviors;
 using TTengine.Modifiers;
 using Game1.Comps;
 
-namespace Game1.Factories
+namespace Game1.Core
 {
     /// <summary>
     /// Factory to create new game-specific entities
@@ -20,9 +20,9 @@ namespace Game1.Factories
     public class GameFactory
     {
         private static GameFactory _instance = null;
-        private Game1 _game;
+        private QuestGame _game;
 
-        private GameFactory(Game1 game)
+        private GameFactory(QuestGame game)
         {
             _game = game;
         }
@@ -32,7 +32,7 @@ namespace Game1.Factories
             get
             {
                 if (_instance == null)
-                    _instance = new GameFactory(TTGame.Instance as Game1);
+                    _instance = new GameFactory(TTGame.Instance as QuestGame);
                 return _instance as GameFactory;
             }
         }

@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TTengine.Core;
 using Microsoft.Xna.Framework.Media;
+using TTengine.Core;
+using TTengine.Comps;
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
 
-namespace Game1
+namespace Game1.Core
 {
     /**
      * plays game sounds
      */
-    public class GameSound: Gamelet
+    public class GameSound: IScript
     {
         float vol = 1.0f;
+        double SimTime = 0;
         SoundEvent soundScript = new SoundEvent();
         RenderParams rp = new RenderParams();
         SoundEvent[] soundsBank = new SoundEvent[20];
@@ -48,11 +48,10 @@ namespace Game1
             }
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override void OnUpdate(ScriptContext p)
         {
-            base.OnUpdate(ref p);
-
-            rp.Time = SimTime; // gameTime.ElapsedGameTime.TotalSeconds;
+            SimTime = p.ScriptComp.SimTime;
+            rp.Time = SimTime; 
             MusicEngine.GetInstance().Render(soundScript, rp);
 
         }

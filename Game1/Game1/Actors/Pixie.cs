@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Game1;
 using Game1.Behaviors;
 using Game1.Comps;
-using Game1.Factories;
 using Artemis;
 
 namespace Game1.Actors

@@ -3,6 +3,8 @@
 using TTengine.Core;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
+using Game1.Core;
+using Game1.Comps;
 using Game1.Behaviors;
 
 namespace Game1

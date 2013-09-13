@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using TTengine.Core;
-using Game1.Comps;
 using Microsoft.Xna.Framework;
 using TreeSharp;
 using Artemis;
+using Game1.Core;
+using Game1.Comps;
 
 namespace Game1.Behaviors
 {
     /// <summary>
     /// lets a ThingComp chase another ThingComp when it's visible.
     /// </summary>
-    public class ChaseBehavior: TreeNode
+    public class ChaseBehavior: Behavior
     {
         /// <summary>followed target of this chase behavior</summary>
         public Entity ChaseTarget;

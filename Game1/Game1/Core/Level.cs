@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Game1.Core;
 using Game1.Actors;
 using Game1.Comps;
 using Artemis;
@@ -21,7 +23,9 @@ namespace Game1
         /// <summary>
         /// the current Level singleton
         /// </summary>
-        public static Level Current = null;
+        public static Level Current { get; private set; }
+
+        public Entity LevelEntity = null;
 
         // some default colors and settings that may be changed by Level subclasses
         public static Color PIXIE_COLOR = new Color(251, 101, 159); // pink
@@ -66,7 +70,7 @@ namespace Game1
         /// <summary>
         /// load items/toys/things to a level using a bitmap
         /// </summary>
-        public LevelItemLoader ItemsMap;
+        // FIXME public LevelItemLoader ItemsMap;
 
         /// <summary>
         /// our heroine Pixie
@@ -74,22 +78,24 @@ namespace Game1
         public Entity pixie;
         public Entity boss;
 
-        public SubtitleManager Subtitles;
+        //FIXME public SubtitleManager Subtitles;
 
         // class internal
-        protected ThingControl keyControl; // for pixie
+        //protected ThingControl keyControl; // for pixie
         //protected DebugMessage debugMsg;
-        protected SubtitleText subTitles;
+        // FIXME protected SubtitleText subTitles;
         float timeEscDown = 0f;        
 
         public Level(): base()
         {
-            Current = this; // pointer to level instance singleton
-
-            // create level's objects. These will be added as a child later.
-            MotionB = new MotionBehavior();
-            Subtitles = new SubtitleManager();
+            // FIXME Subtitles = new SubtitleManager();
             //debugMsg = new DebugMessage();
+            LevelEntity = TTFactory.CreateGamelet();
+        }
+
+        public static void SetCurrentLevel(Level l)
+        {
+            Current = l;
         }
 
         /// <summary>
@@ -97,9 +103,9 @@ namespace Game1
         /// </summary>
         protected virtual void InitLevel()
         {
-            Motion.Scale = DEFAULT_SCALE;
-            Motion.ScaleTarget = DEFAULT_SCALE;
-            MySpriteBatch = new TTSpriteBatch(Screen.graphicsDevice,SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
+            LevelEntity.GetComponent<ScaleComp>().Scale = DEFAULT_SCALE;
+            LevelEntity.GetComponent<ScaleComp>().ScaleTarget = DEFAULT_SCALE;
+            //FIXME to screen MySpriteBatch = new TTSpriteBatch(Screen.graphicsDevice,SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
         }
 
         /// <summary>
@@ -107,31 +113,29 @@ namespace Game1
         /// </summary>
         protected virtual void InitPixie()
         {
-            pixie = new Pixie();      
-            pixie.PositionAndTarget = PIXIE_STARTING_POS;
-            pixie.TargetSpeed = PIXIE_TARGETSPEED;
-            Add(pixie);
+            pixie = Pixie.Create();
+            var tc = pixie.GetComponent<ThingComp>();
+            tc.PositionAndTarget = PIXIE_STARTING_POS;
+            tc.TargetSpeed = PIXIE_TARGETSPEED;            
 
-            keyControl = new PixieKeyControl();
-            pixie.Add(keyControl);
+            // TODO controls
+            //keyControl = new PixieKeyControl();
+            //pixie.Add(keyControl);
         }
 
         /// <summary>
         /// Init: bad pixels (enemies)
         /// </summary>
-        protected virtual void InitBadPixels()
-        {
-        }
+        protected abstract void InitBadPixels();
 
         /// <summary>
         /// Init: toys (=weapons)
         /// </summary>
-        protected virtual void InitToys()
-        {
-        }
+        protected abstract void InitToys();
 
         public virtual void LoseLevel()
         {
+            /*
             SubtitleText t = new SubtitleText();
             t.AddText("BADLY WOUNDED, YOU DIE.", 7f);
             t.AddText("Galad the Golden is no more.", 7f);
@@ -139,12 +143,14 @@ namespace Game1
             Subtitles.Show(9,  t);
             pixie.PositionAndTarget = new Vector2(-200f,240f);
             isBackgroundScrollingOn = false;
+             */
         }
 
         public void WinLevel()
         {
             if (!hasWon)
             {
+                /*
                 SubtitleText t = new SubtitleText();
                 t.AddText("YOU WIN!", 5f);
                 t.AddText("The princess\nis rescued.", 4f);
@@ -154,6 +160,7 @@ namespace Game1
                 t.AddText("(Rescue time: " + playTime + " heartbeats.)", 15f);
                 Subtitles.Show(6, t);
                 hasWon = true;
+                 */
             }
         }
 
@@ -162,11 +169,13 @@ namespace Game1
             if (!hasFoundPrincess)
             {
                 hasFoundPrincess = true;
+                /*
                 SubtitleText t = new SubtitleText();
                 t.AddText("Princess! Here you are.", 4f);
                 t.AddText("You look more fair than in any tale.", 4f);
                 t.AddText("Follow me, out of this\ncursed place.", 7f);
                 Subtitles.Show(8, t);
+                 */
             }
         }
 
@@ -175,13 +184,11 @@ namespace Game1
         /// </summary>
         protected abstract void InitLevelSpecific();
 
-        protected override void OnNewParent()
+        public void Init()
         {
-            base.OnNewParent();
-
             //Parent.Add(debugMsg);
-            Add(MotionB);
-            Add(Subtitles);
+            //FIXME Add(MotionB);
+            //Add(Subtitles);
 
             InitLevel();
             InitPixie();
@@ -191,6 +198,7 @@ namespace Game1
         }
 
         /// check keys specific for level
+        /*
         protected virtual void LevelKeyControl(ref UpdateParams p)
         {
             KeyboardState st = Keyboard.GetState();
@@ -213,8 +221,10 @@ namespace Game1
             }
 
         }
+        */
 
         // scroll the level background to match pixie
+        /*
         protected virtual void ScrollBackground(ref UpdateParams p)
         {
             // scrolling background at borders
@@ -227,6 +237,7 @@ namespace Game1
                     Background.Target = pixie.Position;
             }
         }
+         */
 
         /// <summary>
         /// can be overridden with custom functions if screen border is hit by pixie
@@ -248,6 +259,7 @@ namespace Game1
         }
         */
 
+        /*
         protected override void OnUpdate(ref UpdateParams p)
         {
             // important: reflect the global viewpos (for sprites to use)
@@ -263,6 +275,6 @@ namespace Game1
             //Color c= Background.SamplePixel(pixie.Target);
             //debugMsg.Text += "Color: " + c.R + "," + c.G + "," + c.B + "," + c.A;
 
-        }
+        }*/
     }
 }

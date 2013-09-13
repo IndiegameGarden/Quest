@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TTengine.Core;
+using TTengine.Comps;
 using Microsoft.Xna.Framework.Media;
 using TTMusicEngine;
 using TTMusicEngine.Soundevents;
 
 namespace Game1
 {
-    public class GameMusic: Gamelet
+    public class GameMusic: IScript
     {
         float vol = 2f;
         SoundEvent soundScript;
@@ -43,11 +42,9 @@ namespace Game1
             }
         }
 
-        protected override void OnUpdate(ref UpdateParams p)
+        protected override void OnUpdate(ScriptContext p)
         {
-            base.OnUpdate(ref p);
-
-            rp.Time = SimTime; // gameTime.ElapsedGameTime.TotalSeconds;
+            rp.Time = p.ScriptComp.SimTime; // gameTime.ElapsedGameTime.TotalSeconds;
             MusicEngine.GetInstance().Render(soundScript, rp);
 
         }
