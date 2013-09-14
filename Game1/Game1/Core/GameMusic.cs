@@ -42,11 +42,14 @@ namespace Game1
             }
         }
 
-        protected override void OnUpdate(ScriptContext p)
+        public void OnUpdate(ScriptContext ctx)
         {
-            rp.Time = p.ScriptComp.SimTime; // gameTime.ElapsedGameTime.TotalSeconds;
+            rp.Time = ctx.ScriptComp.SimTime; // gameTime.ElapsedGameTime.TotalSeconds;
             MusicEngine.GetInstance().Render(soundScript, rp);
+        }
 
+        public void OnDraw(ScriptContext ctx)
+        {
         }
 
     }

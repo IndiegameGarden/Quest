@@ -42,19 +42,15 @@ namespace Game1.Core
         public static Entity CreateThing(bool hasControls, string bitmap)
         {
             var e = TTFactory.CreateSpritelet(bitmap);
-            var thing = new ThingComp();
-            e.AddComponent(thing);
+            var tc = new ThingComp();
+            e.AddComponent(tc);
 
             SpriteComp sc = e.GetComponent<SpriteComp>();
-
-            thing.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
-            thing.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
-            var textureData = new Color[BoundingRectangle.Width * BoundingRectangle.Height];
+            tc.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
+            tc.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
+            var textureData = new Color[tc.BoundingRectangle.Width * tc.BoundingRectangle.Height];
             sc.Texture.GetData(textureData);
             sc.Center = Vector2.Zero;
-
-            thing.Pushing = new PushBehavior(thing);
-            (e.GetComponent<BTAIComp>().rootNode as PrioritySelector).AddChild(thing.Pushing);
 
             return e;
         }
@@ -70,6 +66,14 @@ namespace Game1.Core
             cycl.minColor = minColor;
             cycl.maxColor = maxColor;
             return cycl;
+        }
+
+        public static Entity CreateSubtitle(string text, Color color)
+        {
+            var e = TTFactory.CreateDrawlet();
+            e.GetComponent<DrawComp>().DrawColor = color;
+            e.Refresh();
+            return e;
         }
 
     }

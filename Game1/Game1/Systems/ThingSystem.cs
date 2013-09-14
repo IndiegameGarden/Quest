@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Microsoft.Xna.Framework;
 using Artemis;
 using Artemis.System;
 using Artemis.Manager;
@@ -12,11 +11,38 @@ using TTengine.Comps;
 namespace Game1.Systems
 {
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
-    public class ThingControlSystem : EntityComponentProcessingSystem<ThingComp,ThingControlComp>
+    public class ThingSystem : EntityComponentProcessingSystem<ThingComp,PositionComp>
     {
-        public override void Process(Entity entity, ThingComp tc, ThingControlComp tcc)
+        protected double dt = 0;
+
+        protected override void Begin()
         {
-            throw new NotImplementedException(); // here code to move a thing based on tcc
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+        }
+
+        public override void Process(Entity entity, ThingComp tc, PositionComp pc)
+        {
+            // Smooth Movement of Thing towards Target
+            Vector2 vdif = tc.Target - tc.Position;
+            if (vdif.LengthSquared() > 0f) // if target not reached yet
+            {
+                Vector2 vmove = vdif;
+                vmove.Normalize();
+                vmove *= (float)tc.TargetSpeed * (float)tc.Velocity ;
+                // convert speed vector to move vector (x = v * t)
+                vmove *= (float)dt;
+                // check if target reached already (i.e. move would overshoot target)
+                if (vmove.LengthSquared() >= vdif.LengthSquared())
+                {
+                    tc.Position = tc.Target;
+                }
+                else
+                {
+                    // apply move towards target
+                    tc.Position += vmove;
+                }
+            }
+
         }
     }
 }

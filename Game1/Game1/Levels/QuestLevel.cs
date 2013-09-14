@@ -49,16 +49,17 @@ namespace Game1.Levels
             base.InitLevel();
 
             // select bitmap bg
-            Background = new LevelBackground("Level1.png");
+            Background = new LevelBackgroundComp("Level1.png");
             Background.ForegroundColor = LEVEL_FOREGROUND_COLOR;
-            Background.TargetSpeed = SCREEN_MOTION_SPEED;
-            Add(Background);
-            Background.Target = PIXIE_STARTING_POS;
-            Background.Position = BG_STARTING_POS;
+            // FIXME Background.TargetSpeed = SCREEN_MOTION_SPEED;
+            LevelEntity.AddComponent(Background);
+
+            LevelEntity.GetComponent<ThingComp>().Target = PIXIE_STARTING_POS;
+            LevelEntity.GetComponent<ThingComp>().Position = BG_STARTING_POS;
 
             // bitmap for things/items to load
-            ItemsMap = new LevelItemLoader("Level1Items.png");            
-            ItemsMap.AddItems(this, ITEM_BLOCK_COLOR, typeof(Block));
+            // FIXME ItemsMap = new LevelItemLoader("Level1Items.png");            
+            //ItemsMap.AddItems(this, ITEM_BLOCK_COLOR, typeof(Block));
         }
 
         protected override void InitBadPixels()
@@ -138,16 +139,19 @@ namespace Game1.Levels
 
         protected override void InitLevelSpecific()
         {
+            var sc = LevelEntity.GetComponent<ScriptComp>();
             Music = new GameMusic();
             Sound = new GameSound();
-            Add(Music);
-            Add(Sound);
+            sc.Scripts.Add(Music);
+            sc.Scripts.Add(Sound);
 
             // princess
+            /*
             Princess p = new Princess();
             p.PositionAndTarget = PRINCESS_POSITION;
             //p.PositionAndTarget = new Vector2(90f,158f); // debug
             Add(p);
+            */
 
             SubtitleText t = new SubtitleText();
             t.AddText("COMPANIONS!", 4f);
@@ -181,24 +185,13 @@ namespace Game1.Levels
             t.StartTime = 13f;
         }
 
-        protected override bool ScreenBorderHit()
-        {
-            if (numberOfZoomOuts < 0)
-            {
-                numberOfZoomOuts++;
-                Motion.Scale /= 2.0f;
-                //Motion.ScaleTarget /= 2.0f;
-                //Motion.ScaleSpeed = 0.2f;
-                return false;
-            }
-            return true;
-        }
-
+        /*
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
             // adapt scroll speed to how fast pixie goes
             Background.TargetSpeed = SCREEN_MOTION_SPEED * pixie.GetComponent<ThingComp>().Velocity;
         }
+         */
     }
 }

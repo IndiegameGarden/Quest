@@ -9,7 +9,7 @@ using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Game1
+namespace Game1.Core
 {
     /// <summary>
     /// the level bitmap that scrolls around the player's view

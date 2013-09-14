@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using TTengine.Core;
+using TTengine.Comps;
+using Artemis;
 
 namespace Game1.Core
 {
     /**
      * Displays subtitle text, manages conflicts
      */
-    public class SubtitleManager: Drawlet
+    public class SubtitleManager: IScript
     {
         /// <summary>
         /// Helper class to manage the queue of subtitle text items
         /// </summary>
         class QueuedText
         {
-            public QueuedText(int priority, SubtitleText text)
+            public QueuedText(int priority, Entity text)
             {
                 this.Priority = priority;
                 this.Text = text;
             }
 
-            public SubtitleText Text;
+            public Entity Text;
             public int Priority = 0;
         }
 
@@ -32,81 +34,70 @@ namespace Game1.Core
         {            
         }
 
-        public SubtitleText Show(int priority, SubtitleText st)
+        public void Show(int priority, Entity st)
         {
             q.Add(new QueuedText(priority, st));
-            st.Active = false;
-            Add(st);
-            return st;
+            st.IsEnabled = false;
         }
 
-        public SubtitleText Show(int priority, string txt, float duration, Color color)
+        public Entity Show(int priority, string txt, double duration, Color color)
         {
-            SubtitleText st = new SubtitleText(txt);
-            st.DrawInfo.DrawColor = color;
-            st.Duration = duration;
+            var st = GameFactory.CreateSubtitle(txt,color);
+            st.AddComponent(new ExpiresComp(duration));
             q.Add(new QueuedText(priority,st));
-            st.Active = false;
-            Add(st);
+            st.IsEnabled = false;
             return st;
         }
 
-        public SubtitleText Show(int priority, string txt, float duration)
+        public Entity Show(int priority, string txt, double duration)
         {
             return Show(priority, txt, duration, Color.WhiteSmoke);
         }
 
-        protected override void OnNewParent()
+        public void OnUpdate(ScriptContext p)
         {
-            base.OnNewParent();
-            // make sure we don't inherit the scaling (extreme zooming) from the level itself.
-            Motion.MotionParent = Parent.Parent.Motion;
-        }
-
-        protected override void OnUpdate(ref UpdateParams p)
-        {
-            base.OnUpdate(ref p);
-
-            // compensate for the level's scaling.            
-            //Motion.Scale = 1f / Parent.Motion.Scale;
-
-            if (q.Count > 0)
+            if (q.Count == 0)
+                return;
+           
+            // clean up q - items that should be removed
+            List<QueuedText> toRemove = new List<QueuedText>();
+            foreach (QueuedText t in q)
             {
-                // clean up q - items that should be removed
-                List<QueuedText> toRemove = new List<QueuedText>();
-                foreach (QueuedText t in q)
-                {
-                    if (t.Text.Delete == true)
-                        toRemove.Add(t);
-                }
-                foreach (QueuedText t in toRemove)
-                {
-                    q.Remove(t);
-                }
-
-                // check which item should be displayed
-                // the highest priority one which is earliest in queue
-                int highestPri = -32000;
-                QueuedText winnerItem = null;
-                foreach (QueuedText t in q)
-                {
-                    // by default, text is not active. Only the winning text will be.
-                    t.Text.Active = false; 
-                    if (t.Priority > highestPri && t.Text.StartTime <= SimTime )
-                    {
-                        highestPri = t.Priority;
-                        winnerItem = t;
-                    }
-                }
-
-                // activate only the winning item
-                if (winnerItem != null )
-                {
-                    currentItem = winnerItem;
-                    currentItem.Text.Active = true;
-                }
-
+                if (!t.Text.IsActive)
+                    toRemove.Add(t);
             }
+            foreach (QueuedText t in toRemove)
+            {
+                q.Remove(t);
+            }
+
+            // check which item should be displayed
+            // the highest priority one which is earliest in queue
+            int highestPri = -32000;
+            QueuedText winnerItem = null;
+            foreach (QueuedText t in q)
+            {
+                // by default, text is not active. Only the winning text will be.
+                t.Text.IsEnabled = false; 
+                if (t.Priority > highestPri /*&& t.Text.StartTime <= SimTime */ )
+                {
+                    highestPri = t.Priority;
+                    winnerItem = t;
+                }
+            }
+
+            // activate only the winning item
+            if (winnerItem != null )
+            {
+                currentItem = winnerItem;
+                currentItem.Text.IsEnabled = true;
+            }
+            
         }
+
+        public void OnDraw(ScriptContext ctx)
+        {
+        }
+
     }
 }

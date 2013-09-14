@@ -1,11 +1,11 @@
 ﻿using System;
-
 using TTengine.Core;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Game1.Core;
 using Game1.Comps;
 using Game1.Behaviors;
+using Artemis;
 
 namespace Game1
 {
@@ -13,12 +13,14 @@ namespace Game1
     /// base class for a Toy that can be picked up, left behind, used (and then it is active for a while), sometimes with 
     /// multiple shots before it is expended. Typically some special power, effect or weapon.
     /// </summary>
-    public abstract class Toy: ThingComp
+    public abstract class Toy: Comp
     {
+        public string ToyName = "";
+
         /// <summary>
         /// if my Parent is a ThingComp, this holds it. If null, there is no Parent which is a ThingComp
         /// </summary>
-        public ThingComp ParentThing = null;
+        public Entity ParentThing = null;
 
         public bool CanBePickedUp = true;
 
@@ -53,21 +55,14 @@ namespace Game1
         /// </summary>
         public int UsesLeft = 1;
 
-        SubtitleText toyExplanationMessage = null;
-        SubtitleText currentToyMsg = null;
-
         public Toy()
-            : base()
         {          
-            // nothing yet.
         }
-
-        public abstract string ToyName();
 
         /// <summary>
         /// a ParentThing starts using the Toy
         /// </summary>
-        public virtual void StartUsing()
+        public void StartUsing()
         {
             IsUsed = true;
             UseTime = 0f;
@@ -77,7 +72,7 @@ namespace Game1
         /// <summary>
         /// a ParentThing stops using the Toy (or Toy times out)
         /// </summary>
-        public virtual void StopUsing()
+        public void StopUsing()
         {
             UseTime = 0f;
             IsUsed = false;
@@ -92,16 +87,9 @@ namespace Game1
             return s;
         }
 
-        protected void ShowToyMsg(string text, float duration)
+        protected void  OnNewParent()
         {
-            if (currentToyMsg != null)
-                currentToyMsg.Delete = true;
-            currentToyMsg = Level.Current.Subtitles.Show(1, text, duration);
-        }
-
-        protected override void  OnNewParent()
-        {
- 	         base.OnNewParent();
+            /*
              if (Parent is ThingComp)
              {
                  ParentThing = Parent as ThingComp;
@@ -111,8 +99,10 @@ namespace Game1
                      StartUsing();
                  }
              }
+             */
         }
 
+        /*
         protected override void OnUpdate(ref UpdateParams p)
         {
             base.OnUpdate(ref p);
@@ -154,10 +144,12 @@ namespace Game1
                 }
             }
         }
+         */
 
-        protected virtual string SayToyName()
+        // FIXME cant override this method in practice?
+        public string SayToyName()
         {
-            string tname = ToyName();
+            string tname = ToyName;
             if (tname.Length > 0)
                 return "It says:" + (tname.Length > 16 ? "\n" : " ") + "\"" + tname + "\"";
             else

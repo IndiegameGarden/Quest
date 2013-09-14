@@ -10,6 +10,7 @@ using TTengine.Comps;
 using TTengine.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Game1.Core;
 using Game1.Behaviors;
 using Game1.Actors;
 using TreeSharp;
@@ -23,21 +24,12 @@ namespace Game1.Comps
     public class ThingComp: IComponent
     {
         public bool Active = true;
+
         public bool Visible = true;
 
         public Color Color = Color.White;
 
         public Faction Faction = Faction.NEUTRAL;
-
-        /// <summary>
-        /// other Things can be attached to this Thing: the Children.
-        /// </summary>
-        public List<ThingComp> Children = new List<ThingComp>();
-
-        /// <summary>
-        /// this Thing can be attached to a parent Thing, if null then not attached.
-        /// </summary>
-        public ThingComp Parent = null;
 
         /// <summary>
         /// if true can pass anything without colliding
@@ -55,12 +47,6 @@ namespace Game1.Comps
         /// position in the level, in pixels, in sub-pixel resolution
         /// </summary>
         public Vector2 Position = Vector2.Zero;
-
-        /// <summary>
-        /// if attached to a parent, the position relative to parent where it is
-        /// attached
-        /// </summary>
-        public Vector2 AttachmentPosition = Vector2.Zero;
 
         /// <summary>
         /// Position.X as a rounded integer
@@ -127,7 +113,7 @@ namespace Game1.Comps
         /// <summary>
         /// the bounding rectangle of the sprite of this Thing, based on Position
         /// </summary>
-        protected Rectangle BoundingRectangle
+        public Rectangle BoundingRectangle
         {
             get {
                 boundingRectangle.X = PositionX; 
@@ -150,12 +136,12 @@ namespace Game1.Comps
         /// <summary>
         /// a 'relative to normal' velocity-of-moving factor i.e. 1f == normal velocity
         /// </summary>
-        public float Velocity = 1f;
+        public double Velocity = 1;
 
         /// <summary>
         /// relative speed of the smooth motion for moving towards Target. Linear speed defined for Velocity==1.
         /// </summary>
-        public float TargetSpeed = 10f;
+        public double TargetSpeed = 10;
 
         /// <summary>
         /// the Toy that is carried by and active for this Thing, or null if none
@@ -175,9 +161,11 @@ namespace Game1.Comps
         /// </summary>
         /// <param name="myPotentialMove">a potential move of this ThingComp, collision checked after applying potential move.</param>
         /// <returns></returns>
-        public List<ThingComp> DetectCollisions(Vector2 myPotentialMove)
+        public List<Entity> DetectCollisions(Vector2 myPotentialMove)
         {
             List<ThingComp> l = new List<ThingComp>();
+            get; // list of all entities (now? or only once?)
+            TTGame.Instance.ChannelMgr.SelectedChannel.World.EntityManager.GetEntities(Aspect.All(typeof(PushComp)));
             foreach (ThingComp t in allThingsList)
             {
                 if (t == this) continue;
@@ -190,7 +178,7 @@ namespace Game1.Comps
             return l;
         }
 
-        public ThingComp FindNearest(Type thingType)
+        public Entity FindNearest(Type thingType)
         {
             ThingComp foundThing = null;
             float bestDist = 99999999f;

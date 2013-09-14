@@ -16,11 +16,27 @@ namespace Game1
     {
         public Vector2 TargetMove = new Vector2();
 
+        public double PushingForce = 0;
+
         public Vector2 TargetMoveMultiplier = new Vector2(1f, 1f);
 
         public double DeltaTimeBetweenMoves = 0.2;
 
         public double TimeBeforeNextMove = 0;
+
+        public Vector2 PushFromOthers = Vector2.Zero;
+        //public Vector2 pushFromOthersRemainder = Vector2.Zero;
+
+        /// <summary>
+        /// receive push force from neighbor Things
+        /// </summary>
+        /// <param name="dir"></param>
+        /// <param name="pushingForce"></param>
+        public void BePushed(Vector2 dir, double pushingForce)
+        {
+            PushFromOthers += dir * (float)pushingForce;
+        }
+
 
         public ThingControlComp()
         {

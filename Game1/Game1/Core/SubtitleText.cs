@@ -13,8 +13,10 @@ namespace Game1.Core
      * Displays a subtitle on screen for a specified time (no rotation or scale at this moment)
      * Text strings may contain Enter char (backslash n). It auto-positions.
      */
-    public class SubtitleText : Drawlet
+    public class SubtitleText : Comp
     {
+        public Vector2 Position = Vector2.Zero;
+
         /// <summary>
         /// scaling vector for subtitles text (horizontal scale, vertical scale)
         /// </summary>
@@ -30,6 +32,8 @@ namespace Game1.Core
         /// </summary>
         public bool Shadow = true;
 
+        public Color Color = Color.White;
+
         /// <summary>
         /// which font to use for drawing text (can be changed)
         /// </summary>
@@ -43,20 +47,17 @@ namespace Game1.Core
         // the default font - used if SubtitleFont not specified
         protected static SpriteFont DefaultSubtitleFont;
 
-        // vars internal
-        protected string[] text;
-        protected float[] timings;
+        public List<string> TextItems { get; private set; }
+        public List<double> TextDurations { get; private set; }
+
         Vector2 totalTextSize;
         bool doReplace;
         float nextTextStartTime = 0f;
 
-        /// <summary>
-        /// create new, empty SubtitleText
-        /// </summary>
         public SubtitleText()
-            : this("")
         {
-            // nothing here: see constructor SubtitleText( string initialText)
+            TextItems = new List<string>();
+            TextDurations = new List<double>();
         }
 
         /// <summary>
@@ -64,12 +65,11 @@ namespace Game1.Core
         /// </summary>
         /// <param name="initialText"></param>
         public SubtitleText( string initialText)
-            : base()
+            :this()
         {
-            text = new string[] { initialText };
-            timings = new float[] { 0f };
+            TextItems.Add(initialText);
+            TextDurations.Add(1);
             doReplace = true;
-            DrawInfo.DrawColor = Color.White;
             InitFont();
         }
 
@@ -82,17 +82,24 @@ namespace Game1.Core
         ///                         If false, each item is added to the previous one.</param>
         public SubtitleText(string[] multiText, float[] timings, bool doReplace)
         {
-            this.text = multiText;
-            this.timings = timings;
+            foreach (var t in multiText)
+                TextItems.Add(t);
+            foreach (var t in timings)
+                TextDurations.Add(t);
             this.doReplace = doReplace;
-            DrawInfo.DrawColor = Color.White;
             InitFont();
+        }
+
+        public void AddText(string text, double duration)
+        {
+            this.TextItems.Add(text);
+            this.TextDurations.Add(duration);
         }
 
         private void InitFont()
         {
             if (DefaultSubtitleFont==null)
-                DefaultSubtitleFont = TTengineMaster.ActiveGame.Content.Load<SpriteFont>("Subtitles1");
+                DefaultSubtitleFont = TTGame.Instance.Content.Load<SpriteFont>("Subtitles1");
             SubtitleFont = DefaultSubtitleFont;
         }
 
@@ -100,51 +107,26 @@ namespace Game1.Core
         {
             get
             {
-                return text[0];
+                return TextItems[0];
             }
             set
             {
-                text[0] = value;
-                timings = new float[] { 0f };
+                TextItems[0] = value;
                 AutoPosition();
             }
         }
 
-        public void AddText(string txt, float duration)
-        {
-            SubtitleText st = new SubtitleText(txt);
-            st.Duration = duration - 0.1f;
-            st.StartTime = nextTextStartTime;
-            AddNextUpdate(st);
-            nextTextStartTime += duration;
-            Duration = nextTextStartTime;
-        }
-
         protected void AutoPosition()
         {
-            int lines = TTutil.LineCount(text[0]);
+            int lines = TTutil.LineCount(TextItems[0]);
             float yOffset = -((float)(lines - 1)) * VerticalLineSpacing - VerticalLineSpacing;
 
-            if (Parent != null && Parent is SubtitleText)
-            {
-                Motion.Position = new Vector2(0f,yOffset);
-                // Use entire text size for calculating middle offsets 
-                totalTextSize = SubtitleFont.MeasureString(text[0]); 
-            }
-            else
-            {
-                Motion.Position = new Vector2(Screen.Center.X, 1f+yOffset); // TODO move up for long texts
-                // Use entire text size for calculating middle offsets 
-                totalTextSize = SubtitleFont.MeasureString(text[0]);
-            }
+            Position = new Vector2(TTGame.Instance.BuildScreen.GetComponent<ScreenComp>().Center.X, 1f+yOffset); // TODO move up for long texts
+            // Use entire text size for calculating middle offsets 
+            totalTextSize = SubtitleFont.MeasureString(TextItems[0]);
         }
 
-        protected override void OnNewParent()
-        {
-            base.OnNewParent();
-            AutoPosition();
-        }
-
+        /*
         protected override void OnDraw(ref DrawParams p)
         {
             Vector2 pos = DrawInfo.DrawPosition;
@@ -181,5 +163,6 @@ namespace Game1.Core
                 MySpriteBatch.DrawString(SubtitleFont, curText, pos, DrawInfo.DrawColor, 0f, origin, ScaleVector * sc, SpriteEffects.None, DrawInfo.LayerDepth);
             }
         }
+         */
     }
 }

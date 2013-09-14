@@ -122,7 +122,7 @@
     <Compile Include="Core\GameMusic.cs" />
     <Compile Include="Core\GameSound.cs" />
     <Compile Include="Core\Level.cs" />
-    <Compile Include="Core\LevelBackground.cs" />
+    <Compile Include="Core\LevelBackgroundComp.cs" />
     <Compile Include="Comps\ThingControlComp.cs" />
     <Compile Include="Core\SubtitleManager.cs" />
     <Compile Include="Core\SubtitleText.cs" />
@@ -135,9 +135,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestGame.cs" />
     <Compile Include="Systems\ColorCycleSystem.cs" />
-    <Compile Include="Systems\ThingControlSystem.cs" />
-    <Compile Include="Systems\RandomWanderSystem.cs" />
     <Compile Include="Systems\ThingSystem.cs" />
+    <Compile Include="Systems\RandomWanderSystem.cs" />
+    <Compile Include="Systems\ThingControlSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

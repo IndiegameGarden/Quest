@@ -48,12 +48,16 @@ namespace Game1.Core
             }
         }
 
-        protected override void OnUpdate(ScriptContext p)
+        public void OnUpdate(ScriptContext p)
         {
             SimTime = p.ScriptComp.SimTime;
             rp.Time = SimTime; 
             MusicEngine.GetInstance().Render(soundScript, rp);
 
+        }
+
+        public void OnDraw(ScriptContext p) 
+        {
         }
 
         protected void Play(int effect, float volume)

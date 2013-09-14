@@ -68,11 +68,6 @@ namespace Game1
             // add framerate counter
             FrameRateCounter.Create(Color.White);
 
-            var t = Factory.CreateMovingTextlet(new Vector2(0.5f, 0.5f), "Title Screen");
-            t.GetComponent<DrawComp>().DrawColor = Color.LightGoldenrodYellow;
-            t.GetComponent<ScaleComp>().Scale = 4;
-
-
             // game channel
             gameChannel = ChannelMgr.CreateChannel();
             ChannelMgr.ZapTo(gameChannel); 
@@ -81,17 +76,8 @@ namespace Game1
             // add framerate counter
             FrameRateCounter.Create(Color.Black);
 
-            // add several sprites             
-            for (float x = 0.1f; x < 1.6f; x += 0.1f)
-            {
-                for (float y = 0.1f; y < 1f; y += 0.1f)
-                {
-                    Factory.CreateHyperActiveBall(new Vector2(x,y));
-                    Factory.CreateMovingTextlet(new Vector2(x,y),"This is the\nTTengine test. !@#$1234");
-                    //break;
-                }
-                //break;
-            }
+            // FIXME create level
+
         }       
 
     }

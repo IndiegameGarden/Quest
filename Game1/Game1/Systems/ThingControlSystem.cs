@@ -8,109 +8,68 @@ using Artemis.Manager;
 using Artemis.Attributes;
 using Game1.Comps;
 using TTengine.Comps;
+using TTengine.Util;
 
 namespace Game1.Systems
 {
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 3)]
-    public class ThingSystem : EntityComponentProcessingSystem<ThingComp,PositionComp>
+    public class ThingControlSystem : EntityComponentProcessingSystem<ThingComp,ThingControlComp>
     {
-        public override void Process(Entity entity, ThingComp comp, PositionComp Motion)
+        double dt = 0;
+
+        protected override void Begin()
         {
-            // update position of the smooth motion of this ThingComp in the TTengine
-            // update position when attached to a parent ThingComp
-            if (comp.Parent != null)
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+        }
+
+        public override void Process(Entity entity, ThingComp tc, ThingControlComp tcc)
+        {
+            tcc.TimeBeforeNextMove -= dt;
+
+            // check how much push I get. If get pushed, try to move
+            if (tcc.PushFromOthers.LengthSquared() > tcc.PushingForce)
             {
-                comp.Target = comp.Parent.Target + comp.AttachmentPosition;
-                Motion.Position = /*Scale.ScaleAbs * */ comp.FromPixels(comp.AttachmentPosition);
+                tcc.TargetMove = tcc.PushFromOthers;
+                tcc.TargetMove.Normalize();
             }
             else
-            {   // not attached to a parent ThingComp
-                Motion.Position = Screen.Center + Motion.ScaleAbs * (FromPixels(Position - ViewPos)); // TODO ViewPos smoothing using Draw cache?
-                //Motion.Position = Position - ViewPos; // alternative to above
+            {
+                // if not yet time to make my move, return
+                if (tcc.TimeBeforeNextMove > 0)
+                    return;
             }
+
+            // reset the countdown timer back to its value
+            if (tcc.TimeBeforeNextMove <= 0)
+                tcc.TimeBeforeNextMove = tcc.DeltaTimeBetweenMoves;
+
+            // if no move to make, return
+            if (tcc.TargetMove.LengthSquared() == 0f)
+                return;
 
             // compute new facingDirection from final TargetMove
-            if (comp.TargetMove.LengthSquared() > 0f)
+            tc.FacingDirection = tcc.TargetMove;
+            tc.FacingDirection.Normalize();
+
+            // check if passable...
+            List<Entity> cols = tc.DetectCollisions(tcc.TargetMove);
+            if (!tc.IsCollisionFree && cols.Count > 0 && tcc.PushingForce > 0f)
             {
-                comp.FacingDirection = comp.TargetMove;
-                comp.FacingDirection.Normalize();
+                // no - so try to push neighbouring things away
+                foreach (Entity t in cols)
+                {
+                    if (t.HasComponent<ThingControlComp>())
+                    {
+                        t.GetComponent<ThingControlComp>().BePushed(tcc.TargetMove, tcc.PushingForce);
+                    }
+                }
             }
 
-            // take steering inputs if any, and move ThingComp, applying collision detection
-            if (comp.TargetMove.LengthSquared() > 0f)
+            if (tc.IsCollisionFree || (!tc.CollidesWithBackground(tcc.TargetMove) && cols.Count == 0))
             {
-                // check if passable...
-                List<ThingComp> cols = DetectCollisions(TargetMove);
-
-                if (!IsCollisionFree && Pushing != null && !IsCollisionFree && cols.Count > 0 && Pushing.Force > 0f)
-                {
-                    // no - so try to push neighbouring things away
-                    foreach (ThingComp t in cols)
-                    {
-                        if (t.Pushing != null)
-                            t.Pushing.BePushed(TargetMove);
-                    }
-                }
-
-                if (IsCollisionFree || (!CollidesWithBackground(TargetMove) && cols.Count==0 ) )
-                {
-                	  // yes - passable
-                    bool ok = true;
-                    if (!IsCollisionFree)
-                    {
-                        // check all attached Things too                        
-                        foreach (ThingComp g in Children)
-                        {
-                            if (g.Visible)
-                            {
-                                ThingComp t = g as ThingComp;
-                                if (t.IsCollisionFree) continue;
-
-                                // first, test if hits background
-                                if (t.CollidesWithBackground(TargetMove))
-                                {
-                                    ok = false;
-                                    break;
-                                }
-
-                                // if not, test if it hits others
-                                List<ThingComp> colsChild = t.DetectCollisions(TargetMove);
-                                if (colsChild.Count > 0)
-                                {
-                                    ok = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    // if there are no objections of main ThingComp (or its attachment) to the move, then move.
-                    if (ok)
-                    {
-                        Target += TargetMove;
-                        TTutil.Round(ref Target);
-                    }
-                }
-                
-            }            
-
-            Vector2 vdif = Target - Position;
-            if (vdif.LengthSquared() > 0f) // if target not reached yet
-            {
-                Vector2 vmove = vdif;
-                vmove.Normalize();
-                vmove *= TargetSpeed * Velocity ;
-                // convert speed vector to move vector (x = v * t)
-                vmove *= p.Dt;
-                // check if target reached already (i.e. move would overshoot target)
-                if (vmove.LengthSquared() >= vdif.LengthSquared())
-                {
-                    Position = Target;
-                }
-                else
-                {
-                    // apply move towards target
-                    Position += vmove;
-                }
+                // yes - passable
+                tc.Target += tcc.TargetMove;
+                TTutil.Round(ref tc.Target);
             }
 
         }

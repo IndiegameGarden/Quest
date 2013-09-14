@@ -62,7 +62,7 @@ namespace Game1.Actors
             Turning.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Turning);
 
-            Wandering = new RandomWanderBehavior(2.7f, 11.3f);
+            Wandering = new RandomWanderBehavior(); //FIXME (2.7f, 11.3f);
             Wandering.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Wandering);
 

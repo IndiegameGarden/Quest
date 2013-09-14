@@ -6,35 +6,19 @@ using TTengine.Core;
 using TTengine.Comps;
 using Microsoft.Xna.Framework;
 
-namespace Game1.Behaviors
+namespace Game1.Comps
 {
     /// <summary>
     /// lets a ThingComp push another ThingComp and being pushed
     /// </summary>
     public class PushComp: Comp
     {
-        /// <summary>
-        /// relative force of pushing (strength of unit related). 0f is no pushing force at all but can be pushed.
-        /// </summary>
-        public float Force = 1.0f;
-
-        public Vector2 pushFromOthers = Vector2.Zero;
-        public Vector2 pushFromOthersRemainder = Vector2.Zero;
 
         public PushComp()
         {
         }
 
-        /// <summary>
-        /// receive push force from neighbor Things
-        /// </summary>
-        /// <param name="dir"></param>
-        public void BePushed(Vector2 dir)
-        {
-            if (Force < 5f)  // FIXME hack to let pixie not be pushed
-                pushFromOthers += dir;
-        }
-
+        /*
         protected override void OnNextMove()
         {
 			// check if there is push from others. This push can build up over time, only
@@ -71,5 +55,6 @@ namespace Game1.Behaviors
             pushFromOthers = Vector2.Zero;
 
         }
+         */
     }
 }
