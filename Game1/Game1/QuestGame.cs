@@ -25,7 +25,6 @@ namespace Game1
     /// </summary>
     public class QuestGame : TTGame
     {
-        public GameFactory Factory;
         Channel titleChannel, gameChannel;
 
         public QuestGame()
@@ -38,7 +37,6 @@ namespace Game1
 
         protected override void Initialize()
         {
-            Factory = GameFactory.Instance;
             base.Initialize();
         }
 

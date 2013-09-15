@@ -19,25 +19,7 @@ namespace Game1.Core
     /// </summary>
     public class GameFactory
     {
-        private static GameFactory _instance = null;
-        private QuestGame _game;
-
-        private GameFactory(QuestGame game)
-        {
-            _game = game;
-        }
-
-        public static GameFactory Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    _instance = new GameFactory(TTGame.Instance as QuestGame);
-                return _instance as GameFactory;
-            }
-        }
-
-        protected Random rnd = new Random();
+        protected static Random rnd = new Random();
 
         public static Entity CreateThing(ThingType tp, bool hasControls, string bitmap)
         {
