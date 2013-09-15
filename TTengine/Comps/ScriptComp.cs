@@ -27,7 +27,7 @@ namespace TTengine.Comps
         /// <summary>
         /// The script that is called every update/draw cycle
         /// </summary>
-        public List<IScript> Scripts;
+        public List<IScript> Scripts = new List<IScript>();
 
         public ScriptComp()
         {        
