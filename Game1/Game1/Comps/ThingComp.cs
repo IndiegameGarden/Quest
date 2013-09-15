@@ -21,6 +21,8 @@ namespace Game1.Comps
 {
     public enum Faction { GOOD, EVIL, NEUTRAL };
 
+    public enum ThingType { HERO, COMPANION, RED_GUARD, SERVANT, BOSS };
+
     public class ThingComp: IComponent
     {
         public bool Active = true;
@@ -30,6 +32,8 @@ namespace Game1.Comps
         public Color Color = Color.White;
 
         public Faction Faction = Faction.NEUTRAL;
+
+        public ThingType Type;
 
         /// <summary>
         /// if true can pass anything without colliding
@@ -152,8 +156,9 @@ namespace Game1.Comps
         protected Color[] textureData;
         protected LevelBackgroundComp bg;
 
-        public ThingComp()
+        public ThingComp(ThingType type)
         {
+            this.Type = type;
         }
 
         /// <summary>
@@ -161,38 +166,40 @@ namespace Game1.Comps
         /// </summary>
         /// <param name="myPotentialMove">a potential move of this ThingComp, collision checked after applying potential move.</param>
         /// <returns></returns>
-        public List<Entity> DetectCollisions(Vector2 myPotentialMove)
+        public List<Entity> DetectCollisions(Entity thing,Vector2 myPotentialMove)
         {
-            List<ThingComp> l = new List<ThingComp>();
-            get; // list of all entities (now? or only once?)
-            TTGame.Instance.ChannelMgr.SelectedChannel.World.EntityManager.GetEntities(Aspect.All(typeof(PushComp)));
-            foreach (ThingComp t in allThingsList)
+            List<Entity> l = new List<Entity>();
+            var b = thing.entityWorld.EntityManager.GetEntities(Aspect.All(typeof(ThingComp)));
+            foreach (Entity e in b)
             {
-                if (t == this) continue;
-                if (!t.Active) continue;
-                if (CollidesWhenThisMoves(t,myPotentialMove))
+                var tc = e.GetComponent<ThingComp>();
+                if (tc == this) continue;
+                if (!tc.Active) continue;
+                if (CollidesWhenThisMoves(tc,myPotentialMove))
                 {
-                    l.Add(t);
+                    l.Add(e);
                 }
             }
             return l;
         }
 
-        public Entity FindNearest(Type thingType)
+        public Entity FindNearest(Entity thing, ThingType thingType)
         {
-            ThingComp foundThing = null;
+            Entity foundThing = null;
             float bestDist = 99999999f;
-            foreach (ThingComp t in allThingsList)
+            var b = thing.entityWorld.EntityManager.GetEntities(Aspect.All(typeof(ThingComp)));
+            foreach (Entity e in b)
             {
-                if (t == this) continue;
-                if (!t.Active) continue;
-                if (t.GetType() == thingType)
+                var tc = e.GetComponent<ThingComp>();
+                if (tc == this) continue;
+                if (!tc.Active) continue;
+                if (tc.Type == thingType)
                 {
-                    float dist = (t.Position - this.Position).Length();
+                    float dist = (tc.Position - this.Position).Length();
                     if (dist < bestDist)
                     {
                         bestDist = dist;
-                        foundThing = t;
+                        foundThing = e;
                     }
                 }
             }
@@ -224,15 +231,15 @@ namespace Game1.Comps
 
         /// <summary>
         /// check whether this ThingComp would collide with anything (ThingComp or background), when attempting
-        /// to do a given move
+        /// to do a given move - TODO factor out this method? Use DetectCollisions
         /// </summary>
         /// <param name="potentialMove">the move to attempt for this ThingComp</param>
         /// <returns>true if ThingComp would collide with something after the potentialMove would have been made, false otherwise</returns>
-        public bool CollidesWithSomething(Vector2 potentialMove)
+        public bool CollidesWithSomething(Entity entity, Vector2 potentialMove)
         {
             if (CollidesWithBackground(potentialMove))
                 return true;
-            List<ThingComp> lt = DetectCollisions(potentialMove);
+            List<Entity> lt = DetectCollisions(entity,potentialMove);
             return  lt.Count > 0 ;
         }
 

@@ -7,6 +7,7 @@ using Game1.Actors;
 using Game1.Comps;
 using TTengine.Util;
 using TreeSharp;
+using Artemis;
 
 namespace Game1.Behaviors
 {
@@ -31,10 +32,11 @@ namespace Game1.Behaviors
             var tcc = ctx.Entity.GetComponent<ThingControlComp>();
 
             // only attack if not blocked there.
-            List<ThingComp> col = tc.DetectCollisions(tc.FacingDirection);
-            foreach(var t in col) 
+            List<Entity> col = tc.DetectCollisions(ctx.Entity,tc.FacingDirection);
+            foreach(Entity e in col) 
             {
-                if (t.Faction != tc.Faction && t.Faction != Faction.NEUTRAL)
+                var tc2 = e.GetComponent<ThingComp>();
+                if (tc2.Faction != tc.Faction && tc2.Faction != Faction.NEUTRAL)
                 {
                     IsAttacking = true;
                     tcc.TargetMove = tc.FacingDirection;
