@@ -52,7 +52,7 @@ namespace Game1.Systems
             tc.FacingDirection.Normalize();
 
             // check if passable...
-            List<Entity> cols = tc.DetectCollisions(tcc.TargetMove);
+            List<Entity> cols = tc.DetectCollisions(entity,tcc.TargetMove);
             if (!tc.IsCollisionFree && cols.Count > 0 && tcc.PushingForce > 0f)
             {
                 // no - so try to push neighbouring things away

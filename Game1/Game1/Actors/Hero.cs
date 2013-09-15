@@ -14,7 +14,7 @@ namespace Game1.Actors
     {
         public static Entity Create()
         {
-            var e = GameFactory.CreateThing(true);
+            var e = GameFactory.CreateThing(ThingType.HERO,true);
             var tc = e.GetComponent<ThingComp>();
             var tcc = e.GetComponent<ThingControlComp>();
 

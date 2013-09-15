@@ -24,7 +24,7 @@ namespace Game1.Levels
         Color LEVEL_FOREGROUND_COLOR = new Color(231, 231, 248);
         Color ITEM_BLOCK_COLOR = new Color(179, 102, 27); // 179,102,27 brown: block
 
-        int numberOfZoomOuts = 0;        
+        //int numberOfZoomOuts = 0;        
 
         public QuestLevel()
             : base()
@@ -102,7 +102,7 @@ namespace Game1.Levels
         {
             var t = e.GetComponent<ThingComp>();
             // move down until on walkable area
-            while(t.CollidesWithSomething(Vector2.Zero)) {
+            while(t.CollidesWithSomething(e,Vector2.Zero)) {
                 t.PositionY += 1;
                 // when unit goes off-screen, delete.
                 if (t.PositionY > this.Background.Texture.Height)

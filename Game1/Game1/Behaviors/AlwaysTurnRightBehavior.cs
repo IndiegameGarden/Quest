@@ -27,9 +27,9 @@ namespace Game1.Behaviors
 
             Vector2 rightHandDirection = RotateVector2(CurrentDirection, MathHelper.PiOver2);
             Vector2 leftHandDirection = RotateVector2(CurrentDirection, -MathHelper.PiOver2);
-            bool isRightHandFree = !tc.CollidesWithSomething(rightHandDirection);
-            bool isLeftHandFree = !tc.CollidesWithSomething(leftHandDirection);
-            bool isFrontFree = !tc.CollidesWithSomething(CurrentDirection);
+            bool isRightHandFree = !tc.CollidesWithSomething(ctx.Entity,rightHandDirection);
+            bool isLeftHandFree = !tc.CollidesWithSomething(ctx.Entity, leftHandDirection);
+            bool isFrontFree = !tc.CollidesWithSomething(ctx.Entity, CurrentDirection);
             bool isSuccess = false;
 
             // change direction to righthand if that's free

@@ -54,7 +54,7 @@ namespace Game1.Core
 
         Vector2 totalTextSize;
         bool doReplace;
-        float nextTextStartTime = 0f;
+        //float nextTextStartTime = 0f;
 
         public SubtitleText()
         {

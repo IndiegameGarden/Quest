@@ -24,12 +24,12 @@ namespace Game1.Actors
         public static Entity Create()
         {
             ChaseBehavior  ChasingHero;
-            ChaseBehavior ChasingCompanions;
+            //ChaseBehavior ChasingCompanions;
             AlwaysTurnRightBehavior Turning;
             RandomWanderBehavior Wandering;
             AttackEnemyBehavior Attacking;
 
-            var e = GameFactory.CreateThing(true);
+            var e = GameFactory.CreateThing(ThingType.RED_GUARD,true);
             var ai = new BTAIComp();
             e.AddComponent(ai);
             var sub = new PrioritySelector();
