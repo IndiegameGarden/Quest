@@ -52,7 +52,7 @@ namespace Game1.Actors
             */
 
             // chase hero
-            ChasingHero = new ChaseBehavior(Level.Current.pixie);
+            ChasingHero = new ChaseBehavior(Level.Current.Hero);
             ChasingHero.DeltaTimeBetweenMoves = RandomMath.RandomBetween(0.47f, 0.75f);
             ChasingHero.ChaseRange = 15f; // RandomMath.RandomBetween(12f, 40f);
             sub.AddChild(ChasingHero);

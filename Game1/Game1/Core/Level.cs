@@ -20,76 +20,54 @@ namespace Game1
     /// </summary>
     public abstract class Level
     {
-        /// <summary>
-        /// the current Level singleton
-        /// </summary>
+        /// <summary>the current Level singleton</summary>
         public static Level Current { get; private set; }
 
+        /// <summary>Entity that holds the level-related components, that are updated by Systems.</summary>
         public Entity LevelEntity = null;
 
         // some default colors and settings that may be changed by Level subclasses
-        public static Color PIXIE_COLOR = new Color(251, 101, 159); // pink
+        public static Color HERO_COLOR = new Color(251, 101, 159); // pink
         public float DEFAULT_SCALE = 20.0f;
         public float SCREEN_MOTION_SPEED = 15.0f;
-        public float PIXIE_TARGETSPEED = 5.0f;
+        public float HERO_TARGETSPEED = 5.0f;
         public int DefaultPassableIntensityThreshold = 280;
-        public Vector2 PIXIE_STARTING_POS = Vector2.Zero; // in pixels        
+        public Vector2 HERO_STARTING_POS = Vector2.Zero; // in pixels        
         public Vector2 BG_STARTING_POS = Vector2.Zero;    // in pixels; bg=background
 
-        // specific crap FIXME
+        // specific crap TODO?
         public bool hasFoundPrincess = false;
         public bool hasWon = false;
 
-        /// <summary>
-        /// scrolling screen trigger boundaries (in TTengine coordinates)
-        /// </summary>
+        /// <summary>TODO scrolling screen trigger boundaries (in TTengine coordinates)</summary>
         public bool isBackgroundScrollingOn = true;
         public float BOUND_X = 0.3f;
         public float BOUND_Y = 0.3f;
 
-        /// <summary>
-        /// default color of the background (e.g. for areas not covered by the bg bitmap)
-        /// </summary>
+        /// <summary>default color of the background (e.g. for areas not covered by the bg bitmap)</summary>
         public Color BackgroundColor = Color.Black;
 
-        /// <summary>
-        /// level music object
-        /// </summary> 
+        /// <summary>level music object</summary> 
         public GameMusic Music;
 
-        /// <summary>
-        /// level sounds object
-        /// </summary>
+        /// <summary>level sounds object</summary>
         public GameSound Sound;
 
-        /// <summary>
-        /// background bitmap
-        /// </summary>
+        /// <summary>background bitmap</summary>
         public LevelBackgroundComp Background;
 
-        /// <summary>
-        /// load items/toys/things to a level using a bitmap
-        /// </summary>
+        /// <summary>load items/toys/things to a level using a bitmap</summary>
         // FIXME public LevelItemLoader ItemsMap;
 
-        /// <summary>
-        /// our heroine Pixie
-        /// </summary>
-        public Entity pixie;
-        public Entity boss;
+        public Entity Hero;
 
-        //FIXME public SubtitleManager Subtitles;
+        public Entity Boss;
 
-        // class internal
-        //protected ThingControl keyControl; // for pixie
-        //protected DebugMessage debugMsg;
-        // FIXME protected SubtitleText subTitles;
-        float timeEscDown = 0f;        
+        public SubtitleManager Subtitles;
 
-        public Level(): base()
+        public Level()
         {
-            // FIXME Subtitles = new SubtitleManager();
-            //debugMsg = new DebugMessage();
+            Subtitles = new SubtitleManager(); 
             LevelEntity = TTFactory.CreateGamelet();
         }
 
@@ -109,14 +87,14 @@ namespace Game1
         }
 
         /// <summary>
-        /// Init: pixie herself (a default implementation is in Level)
+        /// Init: hero (a default implementation is in Level)
         /// </summary>
-        protected virtual void InitPixie()
+        protected virtual void InitHero()
         {
-            pixie = Pixie.Create();
-            var tc = pixie.GetComponent<ThingComp>();
-            tc.PositionAndTarget = PIXIE_STARTING_POS;
-            tc.TargetSpeed = PIXIE_TARGETSPEED;            
+            this.Hero = Actors.Hero.Create();
+            var tc = Hero.GetComponent<ThingComp>();
+            tc.PositionAndTarget = HERO_STARTING_POS;
+            tc.TargetSpeed = HERO_TARGETSPEED;            
 
             // TODO controls
             //keyControl = new PixieKeyControl();
@@ -191,7 +169,7 @@ namespace Game1
             //Add(Subtitles);
 
             InitLevel();
-            InitPixie();
+            InitHero();
             InitBadPixels();
             InitToys();
             InitLevelSpecific();

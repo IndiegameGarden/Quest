@@ -32,13 +32,13 @@ namespace Game1.Levels
             // Level settings
             SCREEN_MOTION_SPEED = 8.0f;
             DEFAULT_SCALE = 15f;// 15f;
-            PIXIE_STARTING_POS = new Vector2(42f, 155f); // in pixels        
+            HERO_STARTING_POS = new Vector2(42f, 155f); // in pixels        
             //PIXIE_STARTING_POS = new Vector2(242f, 155f); // debug
             //PIXIE_STARTING_POS = PRINCESS_POSITION + new Vector2(-10f,-10f); // debug
             //PIXIE_STARTING_POS += new Vector2(200f, 4f); // debug
             //PIXIE_STARTING_POS = new Vector2(73f, 10f); // debug
             //BG_STARTING_POS = new Vector2(30f, 155f); // in pixels; bg=background            
-            BG_STARTING_POS = PIXIE_STARTING_POS + new Vector2(-12f,0f); 
+            BG_STARTING_POS = HERO_STARTING_POS + new Vector2(-12f,0f); 
             //BG_STARTING_POS += new Vector2(200f, 4f); // debug
             //PIXIE_STARTING_POS = new Vector2(188f, 0f); // debug, close to win pos
             //BG_STARTING_POS = new Vector2(188f, 0f); // debug
@@ -54,7 +54,7 @@ namespace Game1.Levels
             // FIXME Background.TargetSpeed = SCREEN_MOTION_SPEED;
             LevelEntity.AddComponent(Background);
 
-            LevelEntity.GetComponent<ThingComp>().Target = PIXIE_STARTING_POS;
+            LevelEntity.GetComponent<ThingComp>().Target = HERO_STARTING_POS;
             LevelEntity.GetComponent<ThingComp>().Position = BG_STARTING_POS;
 
             // bitmap for things/items to load
