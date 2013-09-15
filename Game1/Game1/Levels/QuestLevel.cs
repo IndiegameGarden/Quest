@@ -159,7 +159,6 @@ namespace Game1.Levels
             t.AddText("Squash those Red Guards...!", 4f);
             Subtitles.Show(0, t);
             t.StartTime = 1f;
-            //t.DrawInfo.DrawColor = Color.LightCoral;
 
             t = new SubtitleText();
             t.AddText("Quest for the Pixel Princess XIV", 5f);
@@ -176,12 +175,10 @@ namespace Game1.Levels
             t.AddText("Music by you-may-know-who (guess!)", 4f);
             t.AddText("Sprite by Charles Gabriel (opengameart.org)", 4f);
             t.AddText("FMOD Audio engine (c) Firelight Technologies 2004-2013 (fmod.org)", 4f);
-            
-            Parent.Add(t);
-            t.ScaleVector = new Vector2(1f, 1f);
-            t.Motion.Scale = 0.5f ;
-            t.Motion.Position = new Vector2(Screen.Center.X,0.08f);
-            //t.DrawInfo.Center = Vector2.Zero;
+
+            var e = GameFactory.CreateSubtitle(t);
+            t.ScaleVector = new Vector2(0.5f, 0.5f);
+            e.GetComponent<PositionComp>().Position = new Vector2(Screen.Center.X,0.08f);
             t.StartTime = 13f;
         }
 

@@ -15,9 +15,16 @@ namespace Game1.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 4)]
     public class ColorCycleSystem : EntityComponentProcessingSystem<ColorCycleComp>
     {
+        double dt;
+
+        protected override void Begin()
+        {
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
+        }
+
         public override void Process(Entity entity, ColorCycleComp comp)
         {
-            comp.UpdateComp(this);
+            comp.UpdateComp(dt);
 
             double t = 2 * (comp.SimTime % comp.timePeriod); // TODO SimTime is not the time related to the Draw!
             if (t > comp.timePeriod) // gen sawtooth wave

@@ -50,6 +50,8 @@ namespace Game1.Core
         public List<string> TextItems { get; private set; }
         public List<double> TextDurations { get; private set; }
 
+        public double StartTime = 0;
+
         Vector2 totalTextSize;
         bool doReplace;
         float nextTextStartTime = 0f;

@@ -23,6 +23,8 @@ namespace Game1
         /// <summary>the current Level singleton</summary>
         public static Level Current { get; private set; }
 
+        public ScreenComp Screen;
+
         /// <summary>Entity that holds the level-related components, that are updated by Systems.</summary>
         public Entity LevelEntity = null;
 

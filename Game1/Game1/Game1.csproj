@@ -107,7 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\Pixie.cs" />
+    <Compile Include="Actors\Hero.cs" />
     <Compile Include="Actors\RedGuard.cs" />
     <Compile Include="Behaviors\AlwaysTurnRightBehavior.cs" />
     <Compile Include="Behaviors\ChaseBehavior.cs" />

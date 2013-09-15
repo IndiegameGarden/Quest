@@ -70,8 +70,15 @@ namespace Game1.Core
 
         public static Entity CreateSubtitle(string text, Color color)
         {
-            var e = TTFactory.CreateDrawlet();
+            var e = CreateSubtitle(new SubtitleText(text));
             e.GetComponent<DrawComp>().DrawColor = color;
+            return e;
+        }
+
+        public static Entity CreateSubtitle(SubtitleText stComp)
+        {
+            var e = TTFactory.CreateDrawlet();
+            e.AddComponent(stComp);
             e.Refresh();
             return e;
         }
