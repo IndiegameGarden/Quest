@@ -114,7 +114,6 @@
     <Compile Include="Behaviors\AttackEnemyBehavior.cs" />
     <Compile Include="Comps\ColorCycleComp.cs" />
     <Compile Include="Comps\HealthComp.cs" />
-    <Compile Include="Comps\PushComp.cs" />
     <Compile Include="Behaviors\RandomWanderBehavior.cs" />
     <Compile Include="Comps\RandomWanderComp.cs" />
     <Compile Include="Comps\ThingComp.cs" />
