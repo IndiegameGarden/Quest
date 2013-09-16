@@ -177,7 +177,7 @@ namespace Game1
             r.AttachTo(ball);
 
             // set different time offset initially, per ball (for the modifiers)
-            ball.GetComponent<ModifierComp>().SimTime = 10 * rnd.NextDouble();
+            ball.GetComponent<ScriptComp>().SimTime = 10 * rnd.NextDouble();
 
             ball.Refresh();
             return ball;

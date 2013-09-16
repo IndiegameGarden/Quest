@@ -25,7 +25,7 @@ namespace TTengine.Modifiers
     /// a certain parameter of another object or IComponent. It can also modify
     /// the composition of an entity.
     /// </summary>
-    public class Modifier
+    public class Modifier: IScript
     {
         public delegate void ModifyEntityDelegate(Entity entity, double value);
         public delegate void ModifyModifierDelegate(Modifier mod, double value);
@@ -73,20 +73,20 @@ namespace TTengine.Modifiers
 
         public void AttachTo(Entity e)
         {
-            if (!e.HasComponent<ModifierComp>())
-                e.AddComponent(new ModifierComp());
-            e.GetComponent<ModifierComp>().Add(this);
+            if (!e.HasComponent<ScriptComp>())
+                e.AddComponent(new ScriptComp());
+            e.GetComponent<ScriptComp>().Add(this);
         }
 
-        public void Execute(Entity contextEntity, double time)
+        public void OnUpdate(ScriptContext ctx)
         {
             if (IsActive)
             {
-                double value = GetValue(time);
+                double value = GetValue(ctx.ScriptComp.SimTime);
                 switch (Type)
                 {
                     case ModifierType.ENTITY_MODIFIER:
-                        ModifyEntityCode(contextEntity, value);
+                        ModifyEntityCode(ctx.Entity, value);
                         break;
                     case ModifierType.MODIFIER_MODIFIER:
                         ModifyModifierCode(modifierToModify, value);
@@ -96,6 +96,10 @@ namespace TTengine.Modifiers
                         break;
                 }
             }
+        }
+
+        public void OnDraw(ScriptContext ctx)
+        {
         }
 
         /// <summary>
