@@ -35,7 +35,7 @@ namespace TTengine.Comps
 
         public ScriptComp(IScript script)
         {
-            this.Scripts.Add(script);
+            Add(script);
         }
 
         public void Add(IScript script)

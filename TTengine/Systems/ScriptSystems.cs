@@ -15,7 +15,7 @@ namespace TTengine.Systems
     [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
     public class ScriptSystemUpdate : EntityComponentProcessingSystem<ScriptComp>
     {
-        static ScriptContext ctx = new ScriptContext();
+        ScriptContext ctx = new ScriptContext();
         double dt = 0;
 
         protected override void Begin()
