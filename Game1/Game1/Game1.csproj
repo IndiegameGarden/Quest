@@ -127,6 +127,7 @@
     <Compile Include="Core\SubtitleText.cs" />
     <Compile Include="Core\Toy.cs" />
     <Compile Include="Core\GameFactory.cs" />
+    <Compile Include="Game1.cs" />
     <Compile Include="Levels\QuestLevel.cs" />
     <Compile Include="Program.cs">
       <SubType>Code</SubType>

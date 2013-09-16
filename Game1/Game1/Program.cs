@@ -1,5 +1,6 @@
 // (c) 2010-2013 TranceTrance.com. Distributed under the FreeBSD license in LICENSE.txt
 using System;
+using Microsoft.Xna.Framework;
 
 namespace Game1
 {
@@ -11,7 +12,8 @@ namespace Game1
         /// </summary>
         static void Main(string[] args)
         {
-            using (QuestGame game = new QuestGame())
+            //using (QuestGame game = new QuestGame())
+            using (Game game = new Game1())
             {
                 game.Run();
             }
