@@ -46,16 +46,10 @@ namespace Game1.Levels
 
         protected override void InitLevel()
         {
-            base.InitLevel();
-
             // select bitmap bg
             Background = new LevelBackgroundComp("Level1.png");
             Background.ForegroundColor = LEVEL_FOREGROUND_COLOR;
             // FIXME Background.TargetSpeed = SCREEN_MOTION_SPEED;
-            LevelEntity.AddComponent(Background);
-
-            LevelEntity.GetComponent<ThingComp>().Target = HERO_STARTING_POS;
-            LevelEntity.GetComponent<ThingComp>().Position = BG_STARTING_POS;
 
             // bitmap for things/items to load
             // FIXME ItemsMap = new LevelItemLoader("Level1Items.png");            
@@ -139,11 +133,8 @@ namespace Game1.Levels
 
         protected override void InitLevelSpecific()
         {
-            var sc = LevelEntity.GetComponent<ScriptComp>();
             Music = new GameMusic();
             Sound = new GameSound();
-            sc.Scripts.Add(Music);
-            sc.Scripts.Add(Sound);
 
             // princess
             /*

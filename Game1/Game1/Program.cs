@@ -12,8 +12,8 @@ namespace Game1
         /// </summary>
         static void Main(string[] args)
         {
-            //using (QuestGame game = new QuestGame())
-            using (Game game = new Game1())
+            using (QuestGame game = new QuestGame())
+            //using (Game game = new Game1())
             {
                 game.Run();
             }

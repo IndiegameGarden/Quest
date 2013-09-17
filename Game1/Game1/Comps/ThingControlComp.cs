@@ -12,7 +12,7 @@ namespace Game1
     /// <summary>
     /// The ability to control moves of a ThingComp, either by user input or from AI
     /// </summary>
-    public abstract class ThingControlComp: Comp
+    public class ThingControlComp: Comp
     {
         public Vector2 TargetMove = new Vector2();
 

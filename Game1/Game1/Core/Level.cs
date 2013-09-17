@@ -69,8 +69,8 @@ namespace Game1
 
         public Level()
         {
-            Subtitles = new SubtitleManager(); 
-            LevelEntity = TTFactory.CreateGamelet();
+            Subtitles = new SubtitleManager();
+            Screen = TTGame.Instance.BuildScreen.GetComponent<ScreenComp>();
         }
 
         public static void SetCurrentLevel(Level l)
@@ -78,15 +78,30 @@ namespace Game1
             Current = l;
         }
 
-        /// <summary>
-        /// Init: the scrolling level itself. First Init method that is called
-        /// </summary>
-        protected virtual void InitLevel()
+        public void Init()
         {
+            InitLevel();
+            LevelEntity = GameFactory.CreateLevelet(this);
+            InitHero();
+            InitBadPixels();
+            InitToys();
+            InitLevelSpecific();
+
             LevelEntity.GetComponent<ScaleComp>().Scale = DEFAULT_SCALE;
             LevelEntity.GetComponent<ScaleComp>().ScaleTarget = DEFAULT_SCALE;
+            LevelEntity.GetComponent<ThingComp>().Target = HERO_STARTING_POS;
+            LevelEntity.GetComponent<ThingComp>().Position = BG_STARTING_POS;
+            var sc = LevelEntity.GetComponent<ScriptComp>();
+            sc.Scripts.Add(Music);
+            sc.Scripts.Add(Sound);
+
             //FIXME to screen MySpriteBatch = new TTSpriteBatch(Screen.graphicsDevice,SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
         }
+
+        /// <summary>
+        /// Init scrolling level background itself plus some basic things. First Init method that is called
+        /// </summary>
+        protected abstract void InitLevel();
 
         /// <summary>
         /// Init: hero (a default implementation is in Level)
@@ -163,19 +178,6 @@ namespace Game1
         /// Init: level-specific items (not fitting in the existing init categories) to be initialized by subclasses
         /// </summary>
         protected abstract void InitLevelSpecific();
-
-        public void Init()
-        {
-            //Parent.Add(debugMsg);
-            //FIXME Add(MotionB);
-            //Add(Subtitles);
-
-            InitLevel();
-            InitHero();
-            InitBadPixels();
-            InitToys();
-            InitLevelSpecific();
-        }
 
         /// check keys specific for level
         /*

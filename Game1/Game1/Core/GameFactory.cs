@@ -24,12 +24,15 @@ namespace Game1.Core
         public static Entity CreateThing(ThingType tp, bool hasControls, string bitmap)
         {
             var e = TTFactory.CreateSpritelet(bitmap);
-            var tc = new ThingComp(tp);
+            var sc = e.GetComponent<SpriteComp>();
+            var tc = new ThingComp(tp,Level.Current.Background,sc.Texture);
             e.AddComponent(tc);
-
-            SpriteComp sc = e.GetComponent<SpriteComp>();
+            if (hasControls)
+            {
+                var tcc = new ThingControlComp();
+                e.AddComponent(tcc);
+            }            
             tc.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
-            tc.SetBoundingRectangleWidthHeight(sc.Texture.Width, sc.Texture.Height);
             var textureData = new Color[tc.BoundingRectangle.Width * tc.BoundingRectangle.Height];
             sc.Texture.GetData(textureData);
             sc.Center = Vector2.Zero;
@@ -61,6 +64,16 @@ namespace Game1.Core
         {
             var e = TTFactory.CreateDrawlet();
             e.AddComponent(stComp);
+            e.Refresh();
+            return e;
+        }
+
+        public static Entity CreateLevelet(Level lev)
+        {
+            var e = TTFactory.CreateGamelet();
+            e.AddComponent(new ScaleComp());
+            e.AddComponent(new ThingComp(ThingType.OTHER,null,lev.Background.Texture));
+            e.AddComponent(new ScriptComp());
             e.Refresh();
             return e;
         }

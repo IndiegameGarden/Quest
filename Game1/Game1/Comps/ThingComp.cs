@@ -21,7 +21,7 @@ namespace Game1.Comps
 {
     public enum Faction { GOOD, EVIL, NEUTRAL };
 
-    public enum ThingType { HERO, COMPANION, RED_GUARD, SERVANT, BOSS };
+    public enum ThingType { HERO, COMPANION, RED_GUARD, SERVANT, BOSS, OTHER };
 
     public class ThingComp: IComponent
     {
@@ -113,6 +113,7 @@ namespace Game1.Comps
         }
 
         private Rectangle boundingRectangle = new Rectangle();
+        private LevelBackgroundComp bg;
 
         /// <summary>
         /// the bounding rectangle of the sprite of this Thing, based on Position
@@ -124,17 +125,6 @@ namespace Game1.Comps
                 boundingRectangle.Y = PositionY; 
                 return boundingRectangle; 
             }
-        }
-
-        /// <summary>
-        /// Set width and height of the bounding rectangle of this Thing
-        /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        public void SetBoundingRectangleWidthHeight(int width, int height)
-        {
-            boundingRectangle.Width = width;
-            boundingRectangle.Height = height;
         }
 
         /// <summary>
@@ -154,11 +144,18 @@ namespace Game1.Comps
 
         // used for the collision detection per-pixel
         protected Color[] textureData;
-        protected LevelBackgroundComp bg;
 
-        public ThingComp(ThingType type)
+        public ThingComp(ThingType type, LevelBackgroundComp bgComp, Texture2D collisionTexture)
         {
             this.Type = type;
+            this.bg = bgComp;
+            this.boundingRectangle.Width = collisionTexture.Width;
+            this.boundingRectangle.Height = collisionTexture.Height;
+
+            // TODO needed to fetch text.data per entity? only for those that may change its shape/texture during play?
+            textureData = new Color[collisionTexture.Width * collisionTexture.Height];
+            collisionTexture.GetData(textureData);
+
         }
 
         /// <summary>

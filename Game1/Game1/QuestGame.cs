@@ -17,6 +17,7 @@ using Artemis;
 using TreeSharp;
 
 using Game1.Core;
+using Game1.Levels;
 
 namespace Game1
 {
@@ -25,7 +26,8 @@ namespace Game1
     /// </summary>
     public class QuestGame : TTGame
     {
-        Channel titleChannel, gameChannel;
+        Channel gameChannel;
+        Level level;
 
         public QuestGame()
         {
@@ -40,43 +42,29 @@ namespace Game1
             base.Initialize();
         }
 
-        protected override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Space))
-            {
-                ChannelMgr.ZapTo(titleChannel);
-            }
-            else
-            {
-                ChannelMgr.ZapTo(gameChannel);
-            }
-        }
-
         protected override void LoadContent()
         {
             base.LoadContent();
 
-            // title channel
-            titleChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(titleChannel); // TODO function to create on it without seeing it.
-            titleChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
+            // game channel
+            gameChannel = ChannelMgr.CreateChannel();
+            ChannelMgr.ZapTo(gameChannel); 
+            gameChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
 
             // add framerate counter
             FrameRateCounter.Create(Color.White);
 
-            // game channel
-            gameChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(gameChannel); 
-            gameChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
+            // create level
+            level = new QuestLevel();
+            Level.SetCurrentLevel(level);
+            level.Init();
 
-            // add framerate counter
-            FrameRateCounter.Create(Color.Black);
+        }
 
-            // FIXME create level
-
-        }       
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
 
     }
 }
