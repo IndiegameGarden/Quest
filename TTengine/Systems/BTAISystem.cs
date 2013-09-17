@@ -30,6 +30,7 @@ namespace TTengine.Systems
         public override void Process(Entity entity, BTAIComp btComp)
         {
             ctx.Entity = entity;
+            ctx.BTComp = btComp;
 
             if (btComp.rootNode.LastStatus == null)
                 btComp.rootNode.Start(ctx);

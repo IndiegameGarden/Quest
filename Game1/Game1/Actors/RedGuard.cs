@@ -40,6 +40,9 @@ namespace Game1.Actors
             tc.Color = new Color(255, 10, 4);
             tc.Faction = Faction.EVIL;
 
+            var rwc = new RandomWanderComp();
+            e.AddComponent(rwc);
+
             // attack hero or companions
             Attacking = new AttackEnemyBehavior(attackString);
 
