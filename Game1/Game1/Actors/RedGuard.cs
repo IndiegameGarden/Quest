@@ -42,6 +42,8 @@ namespace Game1.Actors
 
             var rwc = new RandomWanderComp();
             e.AddComponent(rwc);
+            rwc.MinDirectionChangeTime = 2.7;
+            rwc.MaxDirectionChangeTime = 11.3;
 
             // attack hero or companions
             Attacking = new AttackEnemyBehavior(attackString);
@@ -65,7 +67,7 @@ namespace Game1.Actors
             Turning.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Turning);
 
-            Wandering = new RandomWanderBehavior(); //FIXME (2.7f, 11.3f);
+            Wandering = new RandomWanderBehavior();
             Wandering.DeltaTimeBetweenMoves = 0.7f;
             sub.AddChild(Wandering);
 

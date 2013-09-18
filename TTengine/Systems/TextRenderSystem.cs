@@ -81,7 +81,7 @@ namespace TTengine.Systems
                     screen = activeScreen;
 
                 // update drawpos FIXME - should one system do this, now it's two?
-                drawComp.DrawPosition = ToPixels(screen, posComp.Position + posComp.PositionModifier);
+                drawComp.DrawPosition = screen.ToPixels(posComp.Position + posComp.PositionModifier);
 
                 // draw sprite
                 TTSpriteBatch sb = screen.SpriteBatch;
@@ -90,19 +90,6 @@ namespace TTengine.Systems
 
             }
         }
-
-        /// <summary>
-        /// translate a float relative coordinate to pixel coordinates
-        /// </summary>
-        /// <param name="pos">relative coordinate to translate</param>
-        /// <returns>translated to pixels coordinate</returns>
-        protected Vector2 ToPixels(ScreenComp screen, Vector2 pos)
-        {
-            //return (pos * screenlet.screenHeight - Center) * Zoom + Center; // TODO check? only for internal?
-            // TODO optimize screenletcomp access
-            return pos * screen.screenHeight;
-        }
-
 
     }
 }

@@ -43,6 +43,8 @@ namespace Game1.Systems
                 }
             }
 
+            // set position in PositionComp
+            pc.Position = tc.Position;
         }
     }
 }
