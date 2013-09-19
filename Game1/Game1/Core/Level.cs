@@ -86,7 +86,7 @@ namespace Game1
             InitBadPixels();
             InitToys();
             InitLevelSpecific();
-
+            
             LevelEntity.GetComponent<ScaleComp>().Scale = DEFAULT_SCALE;
             LevelEntity.GetComponent<ScaleComp>().ScaleTarget = DEFAULT_SCALE;
             LevelEntity.GetComponent<ThingComp>().Target = HERO_STARTING_POS;
@@ -94,6 +94,7 @@ namespace Game1
             var sc = LevelEntity.GetComponent<ScriptComp>();
             sc.Scripts.Add(Music);
             sc.Scripts.Add(Sound);
+            LevelEntity.Refresh();
 
             //FIXME to screen MySpriteBatch = new TTSpriteBatch(Screen.graphicsDevice,SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
         }

@@ -16,9 +16,7 @@ namespace TTengine.Core
     /// </summary>
     public class ScreenComp: Comp
     {
-        /// <summary>
-        /// create a Screenlet of given dimensions with optionally a RenderTarget 
-        /// </summary>
+        /// <summary>create a Screenlet of given dimensions with optionally a RenderTarget</summary>
         public ScreenComp(bool hasRenderBuffer, int x, int y)
         {
             screenWidth = x;
@@ -29,9 +27,7 @@ namespace TTengine.Core
             InitScreenDimensions();
         }
 
-        /// <summary>
-        /// create a Screenlet of full-screenletEntity dimensions with optionally a RenderTarget 
-        /// </summary>
+        /// <summary>create a Screenlet of full-screenletEntity dimensions with optionally a RenderTarget</summary>
         public ScreenComp(bool hasRenderBuffer): 
             this(hasRenderBuffer,TTGame.Instance.GraphicsDevice.Viewport.Width, TTGame.Instance.GraphicsDevice.Viewport.Height)
         {
@@ -50,6 +46,7 @@ namespace TTengine.Core
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
         public Vector2 ZoomCenter;
 
+        /// <summary>TODO</summary>
         public RenderTarget2D RenderTarget
         {
             get
@@ -63,22 +60,22 @@ namespace TTengine.Core
             }
         }
 
-        /// Width of visible screenletEntity in relative coordinates
+        /// <summary>Width of visible screenletEntity in relative coordinates</summary>
         public float Width { get { return aspectRatio; } }
 
-        /// Height of visible screenletEntity in relative coordinates
+        /// <summary>Height of visible screenletEntity in relative coordinates</summary>
         public float Height { get { return 1.0f; } }
 
-        /// Width of visible screenletEntity in pixels
+        /// <summary>Width of visible screenletEntity in pixels</summary>
         public int WidthPixels { get { return screenWidth; } }
 
-        /// Height of visible screenletEntity in pixels
+        /// <summary>Height of visible screenletEntity in pixels</summary>
         public int HeightPixels { get { return screenHeight; } }
 
-        /// screenlet aspectratio 
+        /// <summary>screenlet aspectratio</summary> 
         public float AspectRatio { get { return aspectRatio;  } }
 
-        /// returns a single Rectangle instance with screenletEntity size/shape
+        /// <summary>returns a single Rectangle instance with screenletEntity size/shape</summary>
         public Rectangle ScreenRectangle
         {
             get
@@ -87,17 +84,16 @@ namespace TTengine.Core
             }
         }
 
+        /// <summary>The default spritebatch associated to this screen, for drawing to it</summary>
+        public TTSpriteBatch SpriteBatch = null;
 
-        #region Private and internal variables
-
-        internal TTSpriteBatch SpriteBatch = null;
+        #region Private and internal variables        
+        //
         private int screenWidth = 0;
         private int screenHeight = 0;
         private float aspectRatio;
         private Rectangle screenRect;
         private RenderTarget2D renderTarget;
-        //internal List<TTSpriteBatch> spriteBatchesActive = new List<TTSpriteBatch>();
-        
         #endregion
 
         /// <summary>

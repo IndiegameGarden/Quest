@@ -70,10 +70,11 @@ namespace Game1.Core
 
         public static Entity CreateLevelet(Level lev)
         {
-            var e = TTFactory.CreateGamelet();
+            var e = TTFactory.CreateDrawlet();
             e.AddComponent(new ScaleComp());
             e.AddComponent(new ThingComp(ThingType.OTHER,null,lev.Background.Texture));
             e.AddComponent(new ScriptComp());
+            e.AddComponent(lev.Background);
             e.Refresh();
             return e;
         }
