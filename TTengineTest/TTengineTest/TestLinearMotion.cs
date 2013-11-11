@@ -18,7 +18,7 @@ namespace TTengineTest
             {
                 for (float y = 10f; y < 768f; y += 100f)
                 {
-                    Factory.CreateHyperActiveBall(new Vector2(x, y));
+                    Factory.CreateMovingBall(new Vector2(x, y));
                 }
             }
         }
