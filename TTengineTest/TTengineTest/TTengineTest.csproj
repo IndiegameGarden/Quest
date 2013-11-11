@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Test.cs" />
+    <Compile Include="TestLinearMotion.cs" />
     <Compile Include="TTUnitTest.cs" />
     <Compile Include="UnitTestsFactory.cs" />
   </ItemGroup>

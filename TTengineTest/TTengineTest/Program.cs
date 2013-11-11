@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 
 namespace TTengineTest
 {
@@ -10,7 +11,7 @@ namespace TTengineTest
         /// </summary>
         static void Main(string[] args)
         {
-            using (TTUnitTest game = new TTUnitTest())
+            using (Game game = new TTUnitTest())
             {
                 game.Run();
             }

@@ -22,12 +22,14 @@ using TreeSharp;
 namespace TTengineTest
 {
     /// <summary>
-    /// This is the main type for your game
+    /// Visual "unit" tests of various aspects of the TTengine. Press keys to cycle through tests.
     /// </summary>
     public class TTUnitTest : TTGame
     {
         public UnitTestsFactory Factory;
-        Channel titleChannel, gameChannel;
+        KeyboardState kbOld = Keyboard.GetState();
+        int channel = 0;
+        List<Channel> channels = new List<Channel>();
 
         public TTUnitTest()
         {
@@ -46,53 +48,37 @@ namespace TTengineTest
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
             KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Space))
+            if (kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space))
             {
-                ChannelMgr.ZapTo(titleChannel);
+                channel++;
+                if (channel >= channels.Count)
+                    Exit();
+                else
+                    ChannelMgr.ZapTo(channels[channel]);
             }
-            else
-            {
-                ChannelMgr.ZapTo(gameChannel);
-            }
+
+            kbOld = kb;
+        }
+
+        private void DoTest(Test t)
+        {
+            channels.Add(ChannelMgr.CreateChannel());
+            t.Initialize(Factory);
+            t.Create();
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
 
-            // title channel
-            titleChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(titleChannel); // TODO function to create on it without seeing it.
-            titleChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
-
-            // add framerate counter
-            FrameRateCounter.Create(Color.White);
-
-            var t = Factory.CreateMovingTextlet(new Vector2(0.5f, 0.5f), "Title Screen");
-            t.GetComponent<DrawComp>().DrawColor = Color.LightGoldenrodYellow;
-            t.GetComponent<ScaleComp>().Scale = 4;
+            // Here all the tests are listed
+            DoTest(new TestLinearMotion());
 
 
-            // game channel
-            gameChannel = ChannelMgr.CreateChannel();
-            ChannelMgr.ZapTo(gameChannel); 
-            gameChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.White;
+            ChannelMgr.ZapTo(channels[0]);
 
-            // add framerate counter
-            FrameRateCounter.Create(Color.Black);
-
-            // add several sprites             
-            for (float x = 0.1f; x < 1.6f; x += 0.1f)
-            {
-                for (float y = 0.1f; y < 1f; y += 0.1f)
-                {
-                    Factory.CreateHyperActiveBall(new Vector2(x,y));
-                    Factory.CreateMovingTextlet(new Vector2(x,y),"This is the\nTTengine test. !@#$1234");
-                    //break;
-                }
-                //break;
-            }
         }       
 
     }
