@@ -56,16 +56,47 @@ namespace TTengineTest
         /// create an active ball with given position and random velocity and some weird (AI) behaviors
         /// </summary>
         /// <returns></returns>
-        public Entity CreateMovingBall(Vector2 pos)
+        public Entity CreateHyperActiveBall(Vector2 pos)
         {
-            var ball = CreateBall(0.08f + 0.03f * (float)rnd.NextDouble());
+            var ball = CreateBall(0.08f + 0.07f * (float)rnd.NextDouble());
 
             // position and velocity set
             ball.GetComponent<PositionComp>().Position = pos;
             ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
+            //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
 
             // duration of entity
             ball.AddComponent(new ExpiresComp(4 + 500 * rnd.NextDouble()));
+
+            // blink                    
+            //ball.AddComponent(new BlinkComp(0.3+5*rnd.NextDouble(),0.4+0.4*rnd.NextDouble()));
+
+            // Behavior Tree AI
+            BTAIComp ai = new BTAIComp();
+            var randomWanderBehavior = new RandomWanderBehavior(1, 6);
+            ai.rootNode = new PrioritySelector(randomWanderBehavior);
+            ball.AddComponent(ai);
+
+            // Modifier to adapt scale
+            var m = new Modifier(MyScaleModifier);
+            //delegate(Entity entity){ entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
+            //);
+            m.AttachTo(ball);
+
+            // another adapting scale with sine rhythm
+            var s = new SineModifier(MyScaleModifier2);
+            s.Frequency = 0.5;
+            s.Amplitude = 0.25;
+            s.Offset = 1;
+            s.AttachTo(ball);
+
+            // modifier to adapt rotation
+            var r = new Modifier(MyRotateModifier, ball.GetComponent<DrawComp>());
+            r.AttachTo(ball);
+
+            // set different time offset initially, per ball (for the modifiers)
+            ball.GetComponent<ScriptComp>().SimTime = 10 * rnd.NextDouble();
 
             ball.Refresh();
             return ball;
@@ -82,6 +113,20 @@ namespace TTengineTest
             return t;
         }
 
+        public void MyScaleModifier(Entity entity, double value)
+        {
+            entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X;
+        }
+
+        public void MyScaleModifier2(Entity entity, double value)
+        {
+            entity.GetComponent<ScaleComp>().ScaleModifier *= value;
+        }
+
+        public void MyRotateModifier(IComponent drawComp, double value)
+        {
+            ((DrawComp)drawComp).DrawRotation = (float)value;
+        }
     }
 
 }
