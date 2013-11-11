@@ -47,7 +47,7 @@ namespace TTengineTest
         /// <returns></returns>
         public Entity CreateBall(double radius)
         {
-            Entity e = TTFactory.CreateSpritelet("paul-hardman_circle-four");
+            Entity e = TTFactory.CreateSpritelet("red-circle_frank-tschakert");
             e.AddComponent(new ScaleComp(radius));
             return e;
         }
@@ -56,29 +56,24 @@ namespace TTengineTest
         /// create an active ball with given position and random velocity and some weird (AI) behaviors
         /// </summary>
         /// <returns></returns>
-        public Entity CreateMovingBall(Vector2 pos)
+        public Entity CreateMovingBall(Vector2 pos, Vector2 velo)
         {
-            var ball = CreateBall(0.08f + 0.03f * (float)rnd.NextDouble());
+            var ball = CreateBall(0.96f + 0.08f * (float)rnd.NextDouble());
 
             // position and velocity set
             ball.GetComponent<PositionComp>().Position = pos;
-            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
-
-            // duration of entity
-            ball.AddComponent(new ExpiresComp(4 + 500 * rnd.NextDouble()));
-
+            ball.GetComponent<VelocityComp>().Velocity = velo;
             ball.Refresh();
             return ball;
 
         }
 
-        public Entity CreateMovingTextlet(Vector2 pos, string text)
+        public Entity CreateTextlet(Vector2 pos, string text, Color col)
         {
             var t = TTFactory.CreateTextlet(text);
             t.GetComponent<PositionComp>().Position = pos;
-            t.GetComponent<DrawComp>().DrawColor = Color.Black;
-            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
-            t.GetComponent<ScaleComp>().Scale = 0.5;
+            t.GetComponent<DrawComp>().DrawColor = col;
+            t.GetComponent<ScaleComp>().Scale = 0.8;
             return t;
         }
 

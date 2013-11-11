@@ -8,17 +8,23 @@ namespace TTengineTest
     /// <summary>Testing the linear motion of objects on screen</summary>
     class TestLinearMotion : Test
     {
+
         public TestLinearMotion()
-            : base()
-        { }
+            : base()        
+        {
+            BackgroundColor = Color.White;
+            Name = "TestLinearMotion";
+        }
 
         public override void Create()
         {
-            for (float x = 10f; x < 1024f; x += 100f)
+            for (float x = 250f; x < 800f; x += 200f)
             {
-                for (float y = 10f; y < 768f; y += 100f)
+                for (float y = 150f; y < 668f; y += 200f)
                 {
-                    Factory.CreateMovingBall(new Vector2(x, y));
+                    var velo = new Vector2(-0.5f + x / 1024f, -0.5f + y / 768f);
+                    velo *= 50.0f;
+                    Factory.CreateMovingBall(new Vector2(x, y), velo );
                 }
             }
         }

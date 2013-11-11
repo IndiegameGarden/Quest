@@ -64,9 +64,19 @@ namespace TTengineTest
 
         private void DoTest(Test t)
         {
-            channels.Add(ChannelMgr.CreateChannel());
+            var c = ChannelMgr.CreateChannel();
+            c.Screen.GetComponent<ScreenComp>().BackgroundColor = t.BackgroundColor;
+
+            channels.Add(c);
             t.Initialize(Factory);
             t.Create();
+
+            // add framerate counter
+            var col = TTutil.InvertColor(t.BackgroundColor);
+            FrameRateCounter.Create(col);
+
+            Factory.CreateTextlet(new Vector2(2f, 750f), t.Name, col);
+
         }
 
         protected override void LoadContent()
