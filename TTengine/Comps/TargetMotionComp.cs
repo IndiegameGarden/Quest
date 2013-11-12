@@ -9,6 +9,7 @@ namespace TTengine.Comps
     /// <summary>
     /// Component for simple physics-based motion 
     /// (velocity, scale, rotation, zoom, etc.)
+    /// FIXME not used yet
     /// </summary>
     public class TargetMotionComp : Comp
     {

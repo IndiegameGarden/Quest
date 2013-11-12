@@ -50,8 +50,8 @@ namespace TTengine.Systems
     #endregion
 
     /// <summary>The movement system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
-    public class MovementSystem : EntityComponentProcessingSystem<PositionComp, VelocityComp>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)] // FIXME all layers numbers in a central scheduler class
+    public class RotateSystem : EntityComponentProcessingSystem<RotateComp, DrawComp>
     {
         double dt = 0;
 
@@ -62,13 +62,10 @@ namespace TTengine.Systems
 
         /// <summary>Processes the specified entity.</summary>
         /// <param name="entity">The entity.</param>
-        public override void Process(Entity entity, PositionComp posComp, VelocityComp veloComp)
+        public override void Process(Entity entity, RotateComp rotComp, DrawComp drawComp)
         {
-            posComp.UpdateComp(dt);
-            posComp.X += (float)(veloComp.X * dt);
-            posComp.Y += (float)(veloComp.Y * dt);
-
-            posComp.PositionModifier = Vector3.Zero;
+            rotComp.UpdateComp(dt);
+            drawComp.DrawRotation = (float)rotComp.Rotate;
         }
     }
 
