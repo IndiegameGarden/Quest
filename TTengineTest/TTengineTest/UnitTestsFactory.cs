@@ -40,6 +40,8 @@ namespace TTengineTest
 
         protected Random rnd = new Random();
 
+        public string BallSprite = "red-circle_frank-tschakert";
+
         /// <summary>
         /// create a ball Spritelet that can be scaled
         /// </summary>
@@ -47,7 +49,7 @@ namespace TTengineTest
         /// <returns></returns>
         public Entity CreateBall(double radius)
         {
-            Entity e = TTFactory.CreateSpritelet("red-circle_frank-tschakert");
+            Entity e = TTFactory.CreateSpritelet(this.BallSprite);
             e.AddComponent(new ScaleComp(radius));
             return e;
         }
