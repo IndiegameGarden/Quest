@@ -50,15 +50,27 @@ namespace TTengineTest
             base.Update(gameTime);
 
             KeyboardState kb = Keyboard.GetState();
-            if (kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space))
+            if ( (kb.IsKeyDown(Keys.Space) && !kbOld.IsKeyDown(Keys.Space)) ||
+                (kb.IsKeyDown(Keys.Right) && !kbOld.IsKeyDown(Keys.Right)) )
             {
-                channel++;
-                if (channel >= channels.Count)
-                    Exit();
-                else
+                if (channel < channels.Count-1)
+                {
+                    channel++;
                     ChannelMgr.ZapTo(channels[channel]);
+                }
             }
-
+            else if (kb.IsKeyDown(Keys.Left) && !kbOld.IsKeyDown(Keys.Left))
+            {
+                if (channel > 0)
+                {
+                    channel--;
+                    ChannelMgr.ZapTo(channels[channel]);
+                }
+            }
+            else if (kb.IsKeyDown(Keys.Escape) && !kbOld.IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
             kbOld = kb;
         }
 
@@ -75,7 +87,7 @@ namespace TTengineTest
             var col = TTutil.InvertColor(t.BackgroundColor);
             FrameRateCounter.Create(col);
 
-            Factory.CreateTextlet(new Vector2(2f, 750f), t.Name, col);
+            Factory.CreateTextlet(new Vector2(2f, 750f), t.GetType().Name, col);
 
         }
 

@@ -19,7 +19,6 @@ namespace TTengineTest
             : base()        
         {
             BackgroundColor = Color.White;
-            Name = "TestLinearMotion";
         }
 
         public override void Create()

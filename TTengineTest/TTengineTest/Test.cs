@@ -12,8 +12,6 @@ namespace TTengineTest
     /// </summary>
     public abstract class Test
     {
-        /// <summary>Name of test to display</summary>
-        public string Name = "Test...";
 
         /// <summary>default background color for this test</summary>
         public Color BackgroundColor = Color.Black;
