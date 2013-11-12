@@ -112,6 +112,7 @@ namespace TTengine.Comps
             {
                 Height = texture.Height;
                 Width = texture.Width;
+                DrawCenter = new Vector2(Center.X * Width, Center.Y * Height); // FIXME adapt all the time (if center changes)??
             }
             if (fileName != null && texture == null)
                 LoadTexture(fileName);

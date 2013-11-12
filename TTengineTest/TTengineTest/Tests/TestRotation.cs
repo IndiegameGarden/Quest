@@ -33,8 +33,9 @@ namespace TTengineTest
                     var velo = Vector2.Zero;
                     velo *= MOVE_SPEED_MULTIPLIER;
                     var ball = Factory.CreateMovingBall(new Vector2(x, y), velo );
-                    ball.GetComponent<ScaleComp>().Scale = 0.05;
+                    ball.GetComponent<ScaleComp>().Scale = 0.15;
                     ball.AddComponent(new RotateComp());
+                    ball.Refresh();
 
                     // modifier to adapt rotation
                     var r = new Modifier<RotateComp>(MyRotateModifier, ball.GetComponent<RotateComp>());

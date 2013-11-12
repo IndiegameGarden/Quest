@@ -81,7 +81,7 @@ namespace TTengine.Systems
                 var p = posComp.Position + posComp.PositionModifier;
                 drawComp.DrawPosition = screen.ToPixels(p);
                 drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
-                spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
+                //spriteComp.DrawCenter = screen.ToPixels(spriteComp.Center); // TODO check
 
                 TTSpriteBatch sb = screen.SpriteBatch;
 
