@@ -11,7 +11,7 @@ namespace TTengineTest
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game game = new TTUnitTest())
+            using (Game game = new TestGame())
             {
                 game.Run();
             }

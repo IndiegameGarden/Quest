@@ -18,13 +18,13 @@ namespace TTengineTest
         /// <summary>default background color for this test</summary>
         public Color BackgroundColor = Color.Black;
 
-        protected UnitTestsFactory Factory;
+        protected TestFactory Factory;
 
         /// <summary>
         /// Called by test initializer
         /// </summary>
         /// <param name="factory"></param>
-        public void Initialize(UnitTestsFactory factory)
+        public void Initialize(TestFactory factory)
         {
             this.Factory = factory;
         }

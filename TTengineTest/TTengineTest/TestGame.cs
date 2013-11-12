@@ -24,14 +24,14 @@ namespace TTengineTest
     /// <summary>
     /// Visual "unit" tests of various aspects of the TTengine. Press keys to cycle through tests.
     /// </summary>
-    public class TTUnitTest : TTGame
+    public class TestGame : TTGame
     {
-        public UnitTestsFactory Factory;
+        public TestFactory Factory;
         KeyboardState kbOld = Keyboard.GetState();
         int channel = 0;
         List<Channel> channels = new List<Channel>();
 
-        public TTUnitTest()
+        public TestGame()
         {
             GraphicsMgr.IsFullScreen = false;
             GraphicsMgr.PreferredBackBufferWidth = 1024; 
@@ -41,7 +41,7 @@ namespace TTengineTest
 
         protected override void Initialize()
         {
-            Factory = UnitTestsFactory.Instance;
+            Factory = TestFactory.Instance;
             base.Initialize();
         }
 

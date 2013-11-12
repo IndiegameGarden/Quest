@@ -18,23 +18,23 @@ namespace TTengineTest
     /// <summary>
     /// Factory to create new game-specific entities
     /// </summary>
-    public class UnitTestsFactory
+    public class TestFactory
     {
-        private static UnitTestsFactory _instance = null;
-        private TTUnitTest _game;
+        private static TestFactory _instance = null;
+        private TestGame _game;
 
-        private UnitTestsFactory(TTUnitTest game)
+        private TestFactory(TestGame game)
         {
             _game = game;
         }
 
-        public static UnitTestsFactory Instance
+        public static TestFactory Instance
         {
             get
             {
                 if (_instance == null)
-                    _instance = new UnitTestsFactory(TTGame.Instance as TTUnitTest);
-                return _instance as UnitTestsFactory;
+                    _instance = new TestFactory(TTGame.Instance as TestGame);
+                return _instance as TestFactory;
             }
         }
 
