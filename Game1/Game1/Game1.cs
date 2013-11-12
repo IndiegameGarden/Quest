@@ -142,8 +142,8 @@ namespace Game1
             var ball = CreateBall(0.08f + 0.07f * (float)rnd.NextDouble());
 
             // position and velocity set
-            ball.GetComponent<PositionComp>().Position = pos;
-            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            ball.GetComponent<PositionComp>().Position2D = pos;
+            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, 0f );
             //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
             //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
 
@@ -187,9 +187,9 @@ namespace Game1
         public Entity CreateMovingTextlet(Vector2 pos, string text)
         {
             var t = TTFactory.CreateTextlet(text);
-            t.GetComponent<PositionComp>().Position = pos;
+            t.GetComponent<PositionComp>().Position2D = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
-            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3( (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f , 0f );
             t.GetComponent<ScaleComp>().Scale = 0.5;
             return t;
         }

@@ -80,8 +80,10 @@ namespace TTengine.Systems
                 if (screen == null)
                     screen = activeScreen;
 
-                // update drawpos FIXME - should one system do this, now it's two?
-                drawComp.DrawPosition = screen.ToPixels(posComp.Position + posComp.PositionModifier);
+                // update drawpos FIXME - should one system do this, now it's two? or make a helper method.
+                var p = posComp.Position + posComp.PositionModifier;
+                drawComp.DrawPosition = screen.ToPixels(p);
+                drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
 
                 // draw sprite
                 TTSpriteBatch sb = screen.SpriteBatch;

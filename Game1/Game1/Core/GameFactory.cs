@@ -35,7 +35,7 @@ namespace Game1.Core
             tc.PassableIntensityThreshold = Level.Current.DefaultPassableIntensityThreshold;
             var textureData = new Color[tc.BoundingRectangle.Width * tc.BoundingRectangle.Height];
             sc.Texture.GetData(textureData);
-            sc.Center = Vector2.Zero;
+            sc.Center = Vector3.Zero;
 
             return e;
         }

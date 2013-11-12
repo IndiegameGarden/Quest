@@ -68,7 +68,7 @@ namespace TTengine.Systems
             posComp.X += (float)(veloComp.X * dt);
             posComp.Y += (float)(veloComp.Y * dt);
 
-            posComp.PositionModifier = Vector2.Zero;
+            posComp.PositionModifier = Vector3.Zero;
         }
     }
 }

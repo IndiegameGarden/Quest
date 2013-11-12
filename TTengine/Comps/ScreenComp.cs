@@ -38,13 +38,13 @@ namespace TTengine.Core
         public bool Visible = true;
 
         /// <summary>The center pixel coordinate of the screen</summary>
-        public Vector2 Center { get; private set; }
+        public Vector3 Center { get; private set; }
 
         /// <summary>The zoom-in factor, used for showing part of a screen and for translation of other coordinate systems to pixel coordinates.</summary>
         public float Zoom;
 
         /// <summary>The center coordinate, in either pixel or custom coordinates, for applying Zoom</summary>
-        public Vector2 ZoomCenter;
+        public Vector3 ZoomCenter;
 
         /// <summary>TODO</summary>
         public RenderTarget2D RenderTarget
@@ -101,12 +101,12 @@ namespace TTengine.Core
         /// </summary>
         /// <param name="pos">relative coordinate to translate</param>
         /// <returns>translated to pixels coordinate</returns>
-        public Vector2 ToPixels(Vector2 pos)
+        public Vector2 ToPixels(Vector3 pos)
         {
-            return (pos - ZoomCenter) * Zoom + Center;
+            var v = (pos - ZoomCenter) * Zoom + Center;
+            return new Vector2(v.X, v.Y);
             //return pos * screen.screenHeight;
         }
-
 
         protected void OnConstruction()
         {
@@ -137,7 +137,7 @@ namespace TTengine.Core
             //scalingToNormalized = 1.0f / (float)screenHeight;
             screenRect = new Rectangle(0, 0, screenWidth, screenHeight);
             aspectRatio = (float)screenWidth / (float)screenHeight;
-            Center = new Vector2(((float)screenWidth)/2.0f, ((float)screenHeight)/2.0f);
+            Center = new Vector3(((float)screenWidth)/2.0f, ((float)screenHeight)/2.0f, 0f);
             Zoom = 1f;
             ZoomCenter = Center;
         }
