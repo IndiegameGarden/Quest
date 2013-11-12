@@ -8,7 +8,7 @@ using Artemis.System;
 
 namespace TTengine.Core
 {
-    /// <summary>optional base class for components</summary>
+    /// <summary>optional base class for components that implement IComponent</summary>
     public class Comp: IComponent
     {
         /// <summary>Indicate to the processing system whether this component is currently active, or not</summary>
