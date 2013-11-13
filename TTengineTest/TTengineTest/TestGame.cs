@@ -98,7 +98,7 @@ namespace TTengineTest
             // Here all the tests are listed
             DoTest(new TestLinearMotion());
             DoTest(new TestRotation());
-
+            DoTest(new TestRelativeMotion());
 
             ChannelMgr.ZapTo(channels[0]);
 
