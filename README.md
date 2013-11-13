@@ -1,4 +1,2 @@
-Quest
-=====
+Quest game
 
-Quest for the Pixel Princess series
