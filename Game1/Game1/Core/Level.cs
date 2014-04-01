@@ -87,8 +87,10 @@ namespace Game1
             InitToys();
             InitLevelSpecific();
             
-            LevelEntity.GetComponent<ScaleComp>().Scale = DEFAULT_SCALE;
-            LevelEntity.GetComponent<ScaleComp>().ScaleTarget = DEFAULT_SCALE;
+            //FIXME needed in screen.Zoom field
+            //LevelEntity.GetComponent<ScaleComp>().Scale = DEFAULT_SCALE;
+            //LevelEntity.GetComponent<ScaleComp>().ScaleTarget = DEFAULT_SCALE;
+
             LevelEntity.GetComponent<ThingComp>().Target = HERO_STARTING_POS;
             LevelEntity.GetComponent<ThingComp>().Position = BG_STARTING_POS;
             var sc = LevelEntity.GetComponent<ScriptComp>();

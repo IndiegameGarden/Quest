@@ -50,6 +50,7 @@ namespace Game1
             gameChannel = ChannelMgr.CreateChannel();
             ChannelMgr.ZapTo(gameChannel); 
             gameChannel.Screen.GetComponent<ScreenComp>().BackgroundColor = Color.Black;
+            gameChannel.Screen.GetComponent<ScreenComp>().Zoom = 2.0f;
 
             // add framerate counter
             FrameRateCounter.Create(Color.White);

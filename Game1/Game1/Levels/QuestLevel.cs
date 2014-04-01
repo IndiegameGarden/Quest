@@ -62,7 +62,7 @@ namespace Game1.Levels
             //boss = new Boss();
             //Add(boss);
 
-            for (int i = 0; i < 249; i++)
+            for (int i = 0; i < 49; i++)
             {
                 var bp = RedGuard.Create(); // Cloaky();
                 bp.GetComponent<ThingComp>().PositionAndTarget = new Vector2(RandomMath.RandomBetween(123f,720f), RandomMath.RandomBetween(9f,290f) );
