@@ -1,8 +1,8 @@
-﻿#region File description
+#region File description
 
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollisionSystem.cs" company="GAMADU.COM">
-//     Copyright © 2013 GAMADU.COM. All rights reserved.
+// <copyright file="MovementSystem.cs" company="GAMADU.COM">
+//     Copyright � 2013 GAMADU.COM. All rights reserved.
 //
 //     Redistribution and use in source and binary forms, with or without modification, are
 //     permitted provided that the following conditions are met:
@@ -29,7 +29,7 @@
 //     or implied, of GAMADU.COM.
 // </copyright>
 // <summary>
-//   The collision system.
+//   The movement system.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 #endregion File description
@@ -38,68 +38,35 @@ namespace TTengine.Systems
 {
     #region Using statements
 
-    using System.Collections.Generic;
+    using System;
 
     using Artemis;
     using Artemis.Attributes;
     using Artemis.Manager;
     using Artemis.System;
-    using Artemis.Utils;
-
     using Microsoft.Xna.Framework;
-
     using TTengine.Comps;
 
     #endregion
 
-    /// <summary>The collision system.</summary>
-    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)]
-    internal class CollisionSystem : EntitySystem
+    /// <summary>The movement system.</summary>
+    [ArtemisEntitySystem(GameLoopType = GameLoopType.Update, Layer = 1)] // FIXME all layers numbers in a central scheduler class
+    public class RotateSystem : EntityComponentProcessingSystem<RotateComp, DrawComp>
     {
-        /// <summary>Initializes a new instance of the <see cref="CollisionSystem" /> class.</summary>
-        public CollisionSystem()
-            : base(Aspect.All(typeof(PositionComp),typeof(ShapeComp)))
+        double dt = 0;
+
+        protected override void Begin()
         {
+            dt = TimeSpan.FromTicks(EntityWorld.Delta).TotalSeconds;
         }
 
-        /// <summary>Processes the entities.</summary>
-        /// <param name="entities">The entities.</param>
-        protected override void ProcessEntities(IDictionary<int, Entity> entities)
+        /// <summary>Processes the specified entity.</summary>
+        /// <param name="entity">The entity.</param>
+        public override void Process(Entity entity, RotateComp rotComp, DrawComp drawComp)
         {
-            Bag<Entity> allObj = this.EntityWorld.GroupManager.GetEntities(ShapeComp.CollisionGroupName); 
-            if (allObj != null )
-            {
-                for (int i1 = 0; allObj.Count > i1; ++i1)
-                {
-                    Entity e1 = allObj.Get(i1);
-                    for (int i2 = i1+1; allObj.Count > i2; ++i2)
-                    {
-                        Entity e2 = allObj.Get(i2);
-
-                        if (this.CollisionExists(e1, e2))
-                        {
-
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>The collision exists.</summary>
-        /// <param name="entity1">The entity 1.</param>
-        /// <param name="entity2">The entity 2.</param>
-        /// <returns>The <see cref="bool" />.</returns>
-        private bool CollisionExists(Entity entity1, Entity entity2)
-        {
-            var p1 = entity1.GetComponent<PositionComp>();
-            var p2 = entity2.GetComponent<PositionComp>();
-            var s1 = entity1.GetComponent<ShapeComp>();
-            var s2 = entity1.GetComponent<ShapeComp>();
-            p1.Z = 0f;
-            p2.Z = 0f;
-            float dist = Vector3.Distance(p1.Position, p2.Position);
-            return (dist < (s1.Radius + s2.Radius));
-            
+            rotComp.UpdateComp(dt);
+            drawComp.DrawRotation = (float)rotComp.Rotate;
         }
     }
+
 }

@@ -29,7 +29,9 @@ namespace Game1.Systems
         public override void Process(Entity entity, DrawComp drawComp, PositionComp posComp, LevelBackgroundComp lbc)
         {
             // update drawpos
-            drawComp.DrawPosition = activeScreen.ToPixels(posComp.Position + posComp.PositionModifier);
+            var p = posComp.Position + posComp.PositionModifier;
+            drawComp.DrawPosition = activeScreen.ToPixels(p);
+            drawComp.LayerDepth = p.Z; // Z position is translated to a layer depth
             lbc.DrawCenter = activeScreen.ToPixels(lbc.Center); // TODO check
 
             TTSpriteBatch sb = activeScreen.SpriteBatch;

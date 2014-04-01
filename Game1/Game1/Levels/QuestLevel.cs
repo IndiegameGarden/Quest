@@ -169,7 +169,7 @@ namespace Game1.Levels
 
             var e = GameFactory.CreateSubtitle(t);
             t.ScaleVector = new Vector2(0.5f, 0.5f);
-            e.GetComponent<PositionComp>().Position = new Vector2(Screen.Center.X,0.08f);
+            e.GetComponent<PositionComp>().Position2D = new Vector2(Screen.Center.X, 0.08f);
             t.StartTime = 13f;
         }
 

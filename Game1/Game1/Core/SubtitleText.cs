@@ -15,7 +15,7 @@ namespace Game1.Core
      */
     public class SubtitleText : Comp
     {
-        public Vector2 Position = Vector2.Zero;
+        public Vector3 Position = Vector3.Zero;
 
         /// <summary>
         /// scaling vector for subtitles text (horizontal scale, vertical scale)
@@ -25,7 +25,7 @@ namespace Game1.Core
         /// <summary>
         /// displacement (in pixels) of the shadow below subtitles
         /// </summary>
-        public Vector2 ShadowVector = new Vector2(2f, 2f);
+        public Vector3 ShadowVector = new Vector3(2f, 2f, -0.000001f);
 
         /// <summary>
         /// if true uses shadow effect for better visibility of subtitles
@@ -123,7 +123,7 @@ namespace Game1.Core
             int lines = TTutil.LineCount(TextItems[0]);
             float yOffset = -((float)(lines - 1)) * VerticalLineSpacing - VerticalLineSpacing;
 
-            Position = new Vector2(TTGame.Instance.BuildScreen.GetComponent<ScreenComp>().Center.X, 1f+yOffset); // TODO move up for long texts
+            Position = new Vector3(TTGame.Instance.BuildScreen.GetComponent<ScreenComp>().Center.X, 1f+yOffset, 0.5f); // TODO move up for long texts
             // Use entire text size for calculating middle offsets 
             totalTextSize = SubtitleFont.MeasureString(TextItems[0]);
         }

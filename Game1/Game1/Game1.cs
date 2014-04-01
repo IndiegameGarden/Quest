@@ -142,8 +142,8 @@ namespace Game1
             var ball = CreateBall(0.08f + 0.07f * (float)rnd.NextDouble());
 
             // position and velocity set
-            ball.GetComponent<PositionComp>().Position = pos;
-            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            ball.GetComponent<PositionComp>().Position2D = pos;
+            ball.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f, 0f );
             //ball.Motion.Rotate = (float)(Math.PI * 2 * rnd.NextDouble());                    
             //ball.Timing.StartTime = 10f * (float)rnd.NextDouble();
 
@@ -160,20 +160,20 @@ namespace Game1
             ball.AddComponent(ai);
 
             // Modifier to adapt scale
-            var m = new Modifier(MyScaleModifier);
+            var m = new Modifier<Entity>(MyScaleModifier, ball);
             //delegate(Entity entity){ entity.GetComponent<ScaleComp>().Scale = 0.5 + entity.GetComponent<PositionComp>().Position.X; }
             //);
             m.AttachTo(ball);
 
             // another adapting scale with sine rhythm
-            var s = new SineModifier(MyScaleModifier2);
+            var s = new SineModifier<ScaleComp>(MyScaleModifier2, ball.GetComponent<ScaleComp>());
             s.Frequency = 0.5;
             s.Amplitude = 0.25;
             s.Offset = 1;
             s.AttachTo(ball);
 
             // modifier to adapt rotation
-            var r = new Modifier(MyRotateModifier, ball.GetComponent<DrawComp>());
+            var r = new Modifier<DrawComp>(MyRotateModifier, ball.GetComponent<DrawComp>());
             r.AttachTo(ball);
 
             // set different time offset initially, per ball (for the modifiers)
@@ -187,9 +187,9 @@ namespace Game1
         public Entity CreateMovingTextlet(Vector2 pos, string text)
         {
             var t = TTFactory.CreateTextlet(text);
-            t.GetComponent<PositionComp>().Position = pos;
+            t.GetComponent<PositionComp>().Position2D = pos;
             t.GetComponent<DrawComp>().DrawColor = Color.Black;
-            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector2((float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f);
+            t.GetComponent<VelocityComp>().Velocity = 0.2f * new Vector3( (float)rnd.NextDouble() - 0.5f, (float)rnd.NextDouble() - 0.5f , 0f );
             t.GetComponent<ScaleComp>().Scale = 0.5;
             return t;
         }
@@ -199,14 +199,14 @@ namespace Game1
             entity.GetComponent<ScaleComp>().ScaleModifier *= 0.5 + entity.GetComponent<PositionComp>().Position.X;
         }
 
-        public void MyScaleModifier2(Entity entity, double value)
+        public void MyScaleModifier2(ScaleComp sc, double value)
         {
-            entity.GetComponent<ScaleComp>().ScaleModifier *= value;
+            sc.ScaleModifier *= value;
         }
 
-        public void MyRotateModifier(IComponent drawComp, double value)
+        public void MyRotateModifier(DrawComp drawComp, double value)
         {
-            ((DrawComp)drawComp).DrawRotation = (float)value;
+            drawComp.DrawRotation = (float)value;
         }
     }
 
